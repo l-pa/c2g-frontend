@@ -1,4 +1,12 @@
 .App {
   text-align: center;
   margin-top: 2em;
+  font-family: Helvetica, sans-serif
+}
+.message-box{
+  display: grid;
+
+}
+.chatChildren{
+
 }
