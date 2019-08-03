@@ -14,7 +14,7 @@ import '../node_modules/noty/lib/themes/metroui.css'
 
 import { useCookies } from 'react-cookie'
 
-const socket = require('socket.io-client')('http://localhost:8080')
+const socket = require('socket.io-client')('https://c2gbb.herokuapp.com/')
 var room = 'abc123'
 
 const { Title } = Typography
@@ -40,6 +40,7 @@ function App () {
   const [category, setCategory] = useState('explore')
   const [lock, setLock] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
+  const [showHistory, setShowHistory] = useState(false)
   const [cookies, setCookie] = useCookies(['name'])
   const [showModal, setShowModal] = useState(false)
   const [usernameInput, setUsernameInput] = useState('')
@@ -104,7 +105,7 @@ function App () {
 
       </Modal>
 
-      <Title level={1}><span style={{ background: 'linear-gradient(to left, #005c97, #363795)', color: 'white', padding: 12, borderRadius: 10 }}>C2G - alpha test</span></Title>
+      <Title level={1}><span style={{ background: 'linear-gradient(to left, #005c97, #363795)', color: 'white', padding: 12, borderRadius: 10 }}>C2G 😮</span></Title>
       <Divider />
       <Row>
         <Col md={{ span: 4 }}>
@@ -194,6 +195,11 @@ function App () {
               setLock(false)
             }}>
               Dark mode <Icon type='eye' theme='twoTone' twoToneColor='#808080' /></Checkbox>
+            <br />
+            <Checkbox onChange={(value) => {
+              setShowHistory(value.target.checked)
+            }}>
+              Show history <Icon type='book' theme='twoTone' twoToneColor='#808080' /></Checkbox>
             <Divider />
           </div>
         </Col>
@@ -202,13 +208,10 @@ function App () {
           <SocketContext.Provider value={socket}>
             <Coub setLoading={setLoadingProp} />
           </SocketContext.Provider>
-          {loading && (
-            'Progress bar'
-          )}
         </Col>
         <Col md={{ span: 8 }}>
           <SocketContext.Provider value={socket}>
-            <Chat username={username} />
+            <Chat username={username} history={showHistory} />
           </SocketContext.Provider>
 
         </Col>

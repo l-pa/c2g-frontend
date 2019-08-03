@@ -8,7 +8,6 @@ import Noty from 'noty'
 import '../../node_modules/noty/lib/noty.css'
 import '../../node_modules/noty/lib/themes/metroui.css'
 import SocketContext from '../SocketContext'
-import Grid from 'antd/lib/card/Grid'
 
 const CoubSocket = props => (
   <SocketContext.Consumer>
@@ -25,7 +24,7 @@ class Coub extends React.Component {
 
   componentDidMount () {
     this.props.socket.on(
-      'gotNext',
+      'gotCoub',
       function (nextCoub) {
         // Connected, let's sign-up for to receive messages for this room
 
@@ -43,25 +42,6 @@ class Coub extends React.Component {
         }
       }.bind(this)
     )
-
-    this.props.socket.on(
-      'gotPrev',
-      function (prevCoub) {
-        // Connected, let's sign-up for to receive messages for this room
-        this.props.setLoading(false)
-        console.log(prevCoub)
-        if (prevCoub) {
-          this.setState({ currentCoub: prevCoub.permalink })
-          new Noty({
-            theme: 'metroui',
-            type: 'success',
-            layout: 'centerRight',
-            timeout: 1000,
-            text: prevCoub.title
-          }).show()
-        }
-      }.bind(this)
-    )
   }
 
   // http://coub.com/embed/um0um0?muted=false&autostart=true&originalSize=false&hideTopBar=false&startWithHD=false
@@ -69,7 +49,7 @@ class Coub extends React.Component {
     return (
       <div className='coub'>
         <Iframe
-        frameBorder={0}
+          frameBorder={0}
           url={`http://coub.com/embed/${
             this.state.currentCoub
           }?muted=false&autostart=true&originalSize=false&hideTopBar=false&startWithHD=false`}
@@ -86,7 +66,7 @@ class Coub extends React.Component {
             block
             size='large'
             icon='left-circle'
-            shape='circle'
+            shape='round'
             onClick={() => {
               this.props.socket.emit('reqPrev')
             }}
@@ -97,7 +77,7 @@ class Coub extends React.Component {
             block
             size='large'
             icon='right-circle'
-            shape='circle'
+            shape='round'
             onClick={() => {
               this.props.socket.emit('reqNext')
             }}
