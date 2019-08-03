@@ -1,16 +1,14 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import Container from '@material-ui/core/Container'
 import Iframe from 'react-iframe'
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
-import ButtonGroup from '@material-ui/core/ButtonGroup'
-import Icon from '@material-ui/core/Icon'
+
+import { Button, Row, Col } from 'antd'
+import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 
 import Noty from 'noty'
 import '../../node_modules/noty/lib/noty.css'
 import '../../node_modules/noty/lib/themes/metroui.css'
 import SocketContext from '../SocketContext'
+import Grid from 'antd/lib/card/Grid'
 
 const CoubSocket = props => (
   <SocketContext.Consumer>
@@ -71,47 +69,40 @@ class Coub extends React.Component {
     return (
       <div className='coub'>
         <Iframe
+        frameBorder={0}
           url={`http://coub.com/embed/${
             this.state.currentCoub
           }?muted=false&autostart=true&originalSize=false&hideTopBar=false&startWithHD=false`}
-          width='100vw'
-          height='405vh'
+          width='100%'
+          height='600px'
           id='coubVideo'
           className='myClassname'
-          display='initial'
-          position='relative'
         />
         <br />
-        <Grid item>
-          <ButtonGroup
-            fullWidth
-            color='primary'
-            aria-label='full width outlined primary button group'
-          >
-            <Button
-              onClick={() => {
-                this.props.socket.emit('reqPrev')
-              }}
-            >
-              <Icon>skip_previous</Icon>
-            </Button>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
 
-            <Button
-              onClick={() => {
-                this.props.socket.emit('reqRandom')
-              }}
-            >
-              <Icon>movie</Icon>
-            </Button>
-            <Button
-              onClick={() => {
-                this.props.socket.emit('reqNext')
-              }}
-            >
-              <Icon>skip_next</Icon>
-            </Button>
-          </ButtonGroup>
-        </Grid>
+          <Button
+            style={{ margin: 5 }}
+            block
+            size='large'
+            icon='left-circle'
+            shape='circle'
+            onClick={() => {
+              this.props.socket.emit('reqPrev')
+            }}
+          />
+
+          <Button
+            style={{ margin: 5 }}
+            block
+            size='large'
+            icon='right-circle'
+            shape='circle'
+            onClick={() => {
+              this.props.socket.emit('reqNext')
+            }}
+          />
+        </div>
       </div>
     )
   }
