@@ -14,8 +14,8 @@ import '../node_modules/noty/lib/themes/metroui.css'
 
 import { useCookies } from 'react-cookie'
 
-//const socket = require('socket.io-client')('https://c2gbb.herokuapp.com/')
-const socket = require('socket.io-client')('http://localhost:8080')
+const socket = require('socket.io-client')('https://c2gbb.herokuapp.com/')
+//const socket = require('socket.io-client')('http://localhost:8080')
 
 var room = 'abc123'
 
