@@ -14,7 +14,9 @@ import '../node_modules/noty/lib/themes/metroui.css'
 
 import { useCookies } from 'react-cookie'
 
-const socket = require('socket.io-client')('https://c2gbb.herokuapp.com/')
+//const socket = require('socket.io-client')('https://c2gbb.herokuapp.com/')
+const socket = require('socket.io-client')('http://localhost:8080')
+
 var room = 'abc123'
 
 const { Title } = Typography
@@ -152,6 +154,20 @@ function App () {
             >
             Tag
             </Button>
+            <Button block
+              size='large'
+              shape='round'
+              icon='fire'
+              type='danger'
+              style={{ marginTop: '1em' }}
+              onClick={() => {
+                setLoading(true)
+                setCategory('tag')
+                socket.emit('category', { category: 'tag', sort: 'likes_count' })
+              }}
+            >
+            N S F W
+            </Button>
             <Divider />
             { category === 'hot' &&
             <div>
@@ -180,6 +196,21 @@ function App () {
                 <Option value='random'><Icon type='like' theme='twoTone' /> Random</Option>
                 <Option value='coub_of_the_day'><Icon type='thunderbolt' theme='twoTone' /> Coub of the day</Option>
                 <Option value='newest'><Icon type='clock-circle' theme='twoTone' /> Newest</Option>
+              </Select>
+              <Divider />
+            </div>
+            }
+            { category === 'tag' &&
+            <div>
+              <Title level={4}
+              >Sort by </Title>
+              <Select defaultValue='likes_count' style={{ width: '100%' }} onChange={(value) => {
+                socket.emit('category', { category: category, sort: value })
+                setLoading(true)
+              }}>
+                <Option value='likes_count'><Icon type='like' theme='twoTone' /> Likes</Option>
+                <Option value='views_count'><Icon type='thunderbolt' theme='twoTone' /> Views</Option>
+                <Option value='newest_popular'><Icon type='clock-circle' theme='twoTone' /> Newest popular</Option>
               </Select>
               <Divider />
             </div>
