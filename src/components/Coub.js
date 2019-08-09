@@ -50,9 +50,7 @@ class Coub extends React.Component {
       <div className='coub'>
         <Iframe
           frameBorder={0}
-          url={`http://coub.com/embed/${
-            this.state.currentCoub
-          }?muted=false&autostart=true&originalSize=false&hideTopBar=false&startWithHD=false`}
+          url={`http://coub.com/embed/${this.state.currentCoub}?muted=false&autostart=true&originalSize=false&hideTopBar=false&startWithHD=false`}
           width='100%'
           height='600px'
           id='coubVideo'
@@ -60,7 +58,6 @@ class Coub extends React.Component {
         />
         <br />
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-
           <Button
             style={{ margin: 5 }}
             block
