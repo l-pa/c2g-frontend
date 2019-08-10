@@ -7,7 +7,6 @@
     "babel-loader": "8.0.5",
     "noty": "^3.2.0-beta",
     "react": "^16.8.6",
-    "react-cookie": "^4.0.1",
     "react-dom": "^16.8.6",
     "react-iframe": "^1.8.0",
     "react-scripts": "3.0.1",

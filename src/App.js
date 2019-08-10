@@ -15,7 +15,6 @@ import {
   Alert
 } from 'antd'
 import Noty from 'noty'
-import { useCookies } from 'react-cookie'
 import Coub from './components/Coub'
 import Chat from './components/Chat'
 
@@ -51,37 +50,51 @@ function isEmpty (str) {
 
 function App () {
   const [loading, setLoading] = useState(false)
+  const [roomOwner, setRoomOwner] = useState('')
   const [category, setCategory] = useState('')
   const [sort, setSort] = useState('')
-  const [lock, setLock] = useState(false)
   const [channelName, setChannelName] = useState('')
   const [hashtag, setHashtag] = useState('')
   const [coubCount, setCoubCount] = useState(0)
   const [darkMode, setDarkMode] = useState(false)
   const [showHistory, setShowHistory] = useState(false)
-  const [cookies, setCookie] = useCookies(['name'])
   const [showModal, setShowModal] = useState(false)
   const [usernameInput, setUsernameInput] = useState('')
   const [usernameError, setUsernameError] = useState(false)
 
-  const [username, setUsername] = useState('')
+  const [username, setUsername] = useState(window.sessionStorage.getItem('username'))
 
   const [messages, setMessages] = useState([])
+
+  const [users, setUsers] = useState([])
 
   socket.on('coubCount', function (coubCount) {
     setCoubCount(coubCount)
   })
 
+  socket.on('users', function (users) {
+    setUsers(Array.from(users))
+  })
+
   socket.on('connect', function () {
     // Connected, let's sign-up for to receive messages for this room
     socket.emit('room', room)
-    setUsername(socket.id)
+    if (!window.sessionStorage.getItem('username')) {
+      setShowModal(true)
+    } else {
+      setUsername(window.sessionStorage.getItem('username'))
+    }
   })
 
   function setLoadingProp (value) {
     setLoading(value)
   }
   setLoadingProp.bind(this)
+
+  function setOwnerProp (value) {
+    setRoomOwner(value)
+  }
+  setOwnerProp.bind(this)
 
   function useEffectSkipFirst (fn, arr) {
     const isFirst = useRef(true)
@@ -112,6 +125,10 @@ function App () {
   useEffect(() => {
   }, [coubCount])
 
+  useEffect(() => {
+    socket.emit('username', username)
+  }, [username])
+
   return (
     <div className='App'>
       <Modal
@@ -126,7 +143,9 @@ function App () {
                 setUsernameError(true)
               } else {
                 setUsernameError(false)
-                setCookie('name', usernameInput, { path: '/' })
+                window.sessionStorage.setItem('username', usernameInput)
+                setUsername(usernameInput)
+                setShowModal(false)
               }
             }}
           >
@@ -167,7 +186,7 @@ function App () {
             borderRadius: 10
           }}
         >
-          C2G 😮
+          C2G - UPDATE
         </span>
       </Title>
       <Divider />
@@ -365,21 +384,25 @@ function App () {
               </div>
             )}
             <Title level={4}>Settings</Title>
+            {
+              roomOwner === socket.id &&
+
+              <Checkbox
+                disabled
+                onChange={() => {
+                  socket.emit('lock')
+                }}
+              >
+              Lock room
+                <Icon type='lock' theme='twoTone' twoToneColor='#FFD700' />
+              </Checkbox>
+            }
+            <br />
 
             <Checkbox
               disabled
               onChange={() => {
-                setLock(false)
-              }}
-            >
-              Lock room
-              <Icon type='lock' theme='twoTone' twoToneColor='#FFD700' />
-            </Checkbox>
-            <br />
-            <Checkbox
-              disabled
-              onChange={() => {
-                setLock(false)
+                // TODO
               }}
             >
               Dark mode
@@ -413,7 +436,7 @@ function App () {
         </Col>
         <Col md={{ span: 8 }}>
           <SocketContext.Provider value={socket}>
-            <Chat username={username} history={showHistory} />
+            <Chat username={username} history={showHistory} users={users} setOwner={setOwnerProp} />
           </SocketContext.Provider>
         </Col>
       </Row>

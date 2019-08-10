@@ -1,8 +1,10 @@
 import React from 'react'
-import { Input, Avatar, Divider, Button, Icon, Row, Col } from 'antd'
+import { Input, Avatar, Divider, Button, Icon, Row, Col, Badge, Typography } from 'antd'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { animateScroll } from 'react-scroll'
 import SocketContext from '../SocketContext'
+
+const { Text } = Typography
 
 const re = /:([\w]+):/g
 
@@ -110,12 +112,31 @@ class Chat extends React.Component {
   }
 
   render () {
+    const users = this.props.users.map((item, i) => {
+      if (item.owner) {
+        this.props.setOwner(item.id)
+        if (item.id === this.props.socket.id) {
+          return <div><li key={i} ><Text mark className={'userList'}>{item.username}</Text><Badge style={{ marginLeft: 5 }} status='success' title={'Room owner'} /></li></div>
+        } else {
+          return <div><li key={i} className={'userList'} >{item.username}<Badge style={{ marginLeft: 5 }} status='success' title={'Room owner'} /></li></div>
+        }
+      } else {
+        if (item.id === this.props.socket.id) {
+          return <li key={i}><Text className={'userList'} mark>{item.username}</Text></li>
+        } else {
+          return <li key={i} className={'userList'}>{item.username}</li>
+        }
+      }
+    })
+
     return (
       <div style={{ margin: 10, padding: 25, borderRadius: 15 }}>
         <div className='usersChat' style={{ margin: 10 }}>
           <div className='userChat'>
             User List
-            <ul />
+            {
+              users
+            }
           </div>
         </div>
         <Divider dashed style={{ marginBottom: 10, marginTop: 0 }} />
