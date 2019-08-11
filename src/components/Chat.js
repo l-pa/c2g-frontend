@@ -113,18 +113,56 @@ class Chat extends React.Component {
 
   render () {
     const users = this.props.users.map((item, i) => {
-      if (item.owner) {
-        this.props.setOwner(item.id)
-        if (item.id === this.props.socket.id) {
-          return <div><li key={i} ><Text mark className={'userList'}>{item.username}</Text><Badge style={{ marginLeft: 5 }} status='success' title={'Room owner'} /></li></div>
+      if (item.id) {
+        if (item.owner) {
+          this.props.setOwner(item.id)
+          if (item.id === this.props.socket.id) {
+            return <div>
+              <Row className={'user'}>
+                <Col span={3}>
+                  <Avatar src={`https://avatars.dicebear.com/v2/human/${item.username}.svg`} size={'large'} />
+                </Col>
+                <Col span={21}>
+                  <Text mark className={'userList'}>{item.username}</Text> <Badge style={{ marginLeft: 5 }} status='success' title={'Room owner'} />
+                </Col>
+              </Row>
+            </div>
+          } else {
+            return <div>
+              <Row className={'user'}>
+                <Col span={3}>
+                  <Avatar src={`https://avatars.dicebear.com/v2/human/${item.username}.svg`} size={'large'} />
+                </Col>
+                <Col span={21}>
+                  <Text className={'userList'}>{item.username}</Text> <Badge style={{ marginLeft: 5 }} status='success' title={'Room owner'} />
+                </Col>
+              </Row>
+            </div>
+          }
         } else {
-          return <div><li key={i} className={'userList'} >{item.username}<Badge style={{ marginLeft: 5 }} status='success' title={'Room owner'} /></li></div>
-        }
-      } else {
-        if (item.id === this.props.socket.id) {
-          return <li key={i}><Text className={'userList'} mark>{item.username}</Text></li>
-        } else {
-          return <li key={i} className={'userList'}>{item.username}</li>
+          if (item.id === this.props.socket.id) {
+            return <div>
+              <Row className={'user'}>
+                <Col span={3}>
+                  <Avatar src={`https://avatars.dicebear.com/v2/human/${item.username}.svg`} size={'large'} />
+                </Col>
+                <Col span={21}>
+                  <Text mark className={'userList'}>{item.username}</Text>
+                </Col>
+              </Row>
+            </div>
+          } else {
+            return <div>
+              <Row className={'user'}>
+                <Col span={3}>
+                  <Avatar src={`https://avatars.dicebear.com/v2/human/${item.username}.svg`} size={'large'} />
+                </Col>
+                <Col span={21}>
+                  <Text className={'userList'}>{item.username}</Text>
+                </Col>
+              </Row>
+            </div>
+          }
         }
       }
     })
@@ -208,7 +246,7 @@ function Message (props) {
       >
         {props.showUser && (
           <div style={{ marginTop: 10 }}>
-            <Avatar size='small' icon='user' />             {props.user}
+            <Avatar size='small' src={`https://avatars.dicebear.com/v2/human/${props.user}.svg`} /> {props.user}
           </div>
         )}
         <Row>
