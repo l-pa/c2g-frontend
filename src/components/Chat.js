@@ -113,7 +113,7 @@ class Chat extends React.Component {
 
   render () {
     const users = this.props.users.map((item, i) => {
-      if (item.id) {
+      if (item) {
         if (item.owner) {
           this.props.setOwner(item.id)
           if (item.id === this.props.socket.id) {
