@@ -25,8 +25,8 @@ import SocketContext from './SocketContext'
 import '../node_modules/noty/lib/noty.css'
 import '../node_modules/noty/lib/themes/metroui.css'
 
-const socket = require('socket.io-client')('https://c2gbb.herokuapp.com/')
-// const socket = require('socket.io-client')('http://localhost:8080')
+// const socket = require('socket.io-client')('https://c2gbb.herokuapp.com/')
+const socket = require('socket.io-client')('http://localhost:8080')
 
 const room = 'abc123'
 
@@ -73,7 +73,8 @@ function App () {
   })
 
   socket.on('users', function (users) {
-    setUsers(Array.from(users))
+    setUsers(users)
+    console.log(users)
   })
 
   socket.on('connect', function () {
@@ -436,7 +437,7 @@ function App () {
         </Col>
         <Col md={{ span: 8 }}>
           <SocketContext.Provider value={socket}>
-            <Chat username={username} history={showHistory} users={users} setOwner={setOwnerProp} />
+            <Chat id={socket.id} username={username} history={showHistory} users={users} setOwner={setOwnerProp} />
           </SocketContext.Provider>
         </Col>
       </Row>

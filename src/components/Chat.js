@@ -49,12 +49,17 @@ class Chat extends React.Component {
   allMessages () {
     return this.state.messages.map((message, index, array) => {
       let showSender = true
+      console.log(array)
       if (
         array.length > 1 &&
-        array[index - 1] &&
-        array[index].from === array[index - 1].from
+        array[index - 1]
       ) {
-        showSender = false
+        if (array[index].from === array[index - 1].from) {
+          showSender = false
+        }
+        if (!this.props.history && array[index - 1].from === 'Coub') {
+          showSender = false
+        }
       }
 
       if (message.from === this.props.socket.id) {
@@ -200,7 +205,7 @@ class Chat extends React.Component {
               onPressEnter={event => {
                 if (!isEmpty(this.state.inputText)) {
                   this.props.socket.emit('message', {
-                    from: this.props.username,
+                    from: this.props.id,
                     message: this.state.inputText,
                     time: new Date().toLocaleTimeString('it-IT')
                   })
@@ -218,7 +223,7 @@ class Chat extends React.Component {
               onClick={() => {
                 if (!isEmpty(this.state.inputText)) {
                   this.props.socket.emit('message', {
-                    from: this.props.username,
+                    from: this.props.id,
                     message: this.state.inputText,
                     time: new Date().toLocaleTimeString('it-IT')
                   })
