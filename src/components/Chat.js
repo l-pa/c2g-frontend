@@ -205,7 +205,7 @@ class Chat extends React.Component {
               onPressEnter={event => {
                 if (!isEmpty(this.state.inputText)) {
                   this.props.socket.emit('message', {
-                    from: this.props.id,
+                    from: this.props.username,
                     message: this.state.inputText,
                     time: new Date().toLocaleTimeString('it-IT')
                   })
@@ -223,7 +223,7 @@ class Chat extends React.Component {
               onClick={() => {
                 if (!isEmpty(this.state.inputText)) {
                   this.props.socket.emit('message', {
-                    from: this.props.id,
+                    from: this.props.username,
                     message: this.state.inputText,
                     time: new Date().toLocaleTimeString('it-IT')
                   })

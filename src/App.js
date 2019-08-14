@@ -157,7 +157,7 @@ function App () {
       >
         <Title level={3}>
           Set your username
-          <span role='img'>👓</span>
+          <span role='img' aria-label='Glasses'>👓</span>
         </Title>
         <Input
           onChange={event => {
@@ -187,7 +187,7 @@ function App () {
             borderRadius: 10
           }}
         >
-          C2G - UPDATE
+          C2G <span role='img' aria-label='Hmm'>🤔</span>
         </span>
       </Title>
       <Divider />
