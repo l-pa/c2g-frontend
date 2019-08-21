@@ -55,6 +55,7 @@ class Coub extends React.Component {
           height='600px'
           id='coubVideo'
           className='myClassname'
+          title={'Coub video'}
         />
         <br />
         <div style={{ display: 'flex', justifyContent: 'center' }}>

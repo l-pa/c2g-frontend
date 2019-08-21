@@ -64,8 +64,6 @@ function App () {
 
   const [username, setUsername] = useState(window.sessionStorage.getItem('username'))
 
-  const [messages, setMessages] = useState([])
-
   const [users, setUsers] = useState([])
 
   socket.on('coubCount', function (coubCount) {
@@ -74,7 +72,6 @@ function App () {
 
   socket.on('users', function (users) {
     setUsers(users)
-    console.log(users)
   })
 
   socket.on('connect', function () {
@@ -436,8 +433,8 @@ function App () {
           </SocketContext.Provider>
         </Col>
         <Col md={{ span: 8 }}>
-          <SocketContext.Provider value={socket}>
-            <Chat id={socket.id} username={username} history={showHistory} users={users} setOwner={setOwnerProp} />
+          <SocketContext.Provider value={socket}>  
+            <Chat username={username} history={showHistory} users={users} setOwner={setOwnerProp} />
           </SocketContext.Provider>
         </Col>
       </Row>
