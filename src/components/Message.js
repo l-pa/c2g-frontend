@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo, useRef, useCallback, useContext } from 'react'
-import { Input, Avatar, Divider, Button, Icon, Row, Col, Badge, Typography } from 'antd'
+import React from 'react'
+import { Avatar, Row, Col } from 'antd'
 
 const re = /:([\w]+):/g
 
@@ -32,7 +32,7 @@ function Message (props) {
                 marginBottom: 3,
                 fontWeight: 'bold',
                 borderRadius: 10,
-                wordBreak: 'break-all',
+        //        wordBreak: 'break-all',
                 padding: 7,
                 borderStyle: 'solid',
                 borderColor: '#A9A9A9',

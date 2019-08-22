@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo, useRef, useCallback, useContext } from 'react'
-import { Input, Avatar, Divider, Button, Icon, Row, Col, Badge, Typography } from 'antd'
+import React, { useState, useEffect, useMemo, useContext } from 'react'
+import { Input, Avatar, Divider, Button, Row, Col, Badge, Typography } from 'antd'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { animateScroll } from 'react-scroll'
 import SocketContext from '../SocketContext'
@@ -14,32 +14,29 @@ function isEmpty (str) {
 function Chat (props) {
   const [messages, setMessages] = useState([])
   const [inputText, setInputText] = useState('')
-
+  
   const socket = useContext(SocketContext)
-
+  
   useEffect(() => {
     scrollToBottom()
+    console.log(messages)
   }, [messages])
-
-  socket.on(
-    'gotMessage',
-    function (message) {
-      console.log('got message')
-      
-      setMessages([...messages, message])
-    }
-  )
-
-  useCallback(() => {
-    console.log('this')
-  }, [inputText])
+  
+  useEffect(() => {
+    socket.on(
+      'gotMessage',
+      (message) => {
+        setMessages(messages => messages.concat(message)) //  /facebook/react/issues/15041
+      }
+    )
+  }, [])
 
   const users = props.users.map((item, i) => {
     if (item) {
       if (item.owner) {
-      //  props.setOwner(item.id)
+        //  props.setOwner(item.id)
         if (item.id === socket.id) {
-          return <div>
+          return <div key={item.id}>
             <Row className={'user'}>
               <Col span={3}>
                 <Avatar alt={'Avatar'} src={`https://avatars.dicebear.com/v2/human/${item.username}.svg`} size={'large'} />
@@ -50,7 +47,7 @@ function Chat (props) {
             </Row>
           </div>
         } else {
-          return <div>
+          return <div key={item.id}>
             <Row className={'user'}>
               <Col span={3}>
                 <Avatar alt={'Avatar'} src={`https://avatars.dicebear.com/v2/human/${item.username}.svg`} size={'large'} />
@@ -63,7 +60,7 @@ function Chat (props) {
         }
       } else {
         if (item.id === socket.id) {
-          return <div>
+          return <div key={item.id}>
             <Row className={'user'}>
               <Col span={3}>
                 <Avatar alt={'Avatar'} src={`https://avatars.dicebear.com/v2/human/${item.username}.svg`} size={'large'} />
@@ -74,7 +71,7 @@ function Chat (props) {
             </Row>
           </div>
         } else {
-          return <div>
+          return <div key={item.id}>
             <Row className={'user'}>
               <Col span={3}>
                 <Avatar alt={'Avatar'} src={`https://avatars.dicebear.com/v2/human/${item.username}.svg`} size={'large'} />
@@ -87,6 +84,7 @@ function Chat (props) {
         }
       }
     }
+    return true
   }
   )
 
@@ -109,75 +107,78 @@ function Chat (props) {
             style={{ height: '45vh', overflowY: 'scroll' }}
           >
             {
-              useMemo(() => {
-                return messages.map((message, index, array) => {
-                  let showSender = true
-                  if (
-                    array.length > 1 &&
-          array[index - 1]
-                  ) {
-                    if (array[index].from === array[index - 1].from) {
-                      showSender = false
-                    }
-                    if (!props.history && array[index - 1].from === 'Coub') {
-                      showSender = false
-                    }
+              messages.map((message, index, array) => {
+                let showSender = true
+                if (
+                  array.length > 1 &&
+                    array[index - 1]
+                ) {
+                  if (array[index].from === array[index - 1].from) {
+                    showSender = false
                   }
+                  if (!props.history && array[index - 1].from === 'Coub') {
+                    showSender = false
+                  }
+                }
 
-                  if (message.from === socket.id) {
+                if (message.from === socket.id) {
+                  return (
+                    <Message
+                      key={index}
+                      showUser={showSender}
+                      user={message.from}
+                      time={message.time}
+                      message={message.message}
+                    />
+                  )
+                }
+                if (message.from === 'System') {
+                  return (
+                    <Message
+                      key={index}
+                      showUser={showSender}
+                      color='white'
+                      background='radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%)'
+                      user={message.from}
+                      time={message.time}
+                      message={message.message}
+                    />
+                  )
+                }
+                if (message.from === 'Coub') {
+                  // ios_mosaic
+                  const thumbnailLink = message.thumbnail.replace('%{version}', 'tiny')
+                  if (props.history) {
                     return (
                       <Message
-                        showUser={showSender}
-                        user={message.from}
-                        time={message.time}
-                        message={message.message}
-                      />
-                    )
-                  }
-                  if (message.from === 'System') {
-                    return (
-                      <Message
+                        key={index}
+                        thumbnail={thumbnailLink}
+                        link={message.link}
                         showUser={showSender}
                         color='white'
-                        background='radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%)'
+                        background='linear-gradient(to top, #141e30, #243b55)'
                         user={message.from}
                         time={message.time}
                         message={message.message}
                       />
                     )
                   }
-                  if (message.from === 'Coub') {
-                    // ios_mosaic
-                    const thumbnailLink = message.thumbnail.replace('%{version}', 'tiny')
-                    if (props.history) {
-                      return (
-                        <Message
-                          thumbnail={thumbnailLink}
-                          link={message.link}
-                          showUser={showSender}
-                          color='white'
-                          background='linear-gradient(to top, #141e30, #243b55)'
-                          user={message.from}
-                          time={message.time}
-                          message={message.message}
-                        />
-                      )
-                    }
-                  } else {
-                    return (
-                      <Message
-                        showUser={showSender}
-                        color='white'
-                        background='linear-gradient(to bottom, #396afc, #2948ff)'
-                        user={message.from}
-                        time={message.time}
-                        message={message.message}
-                      />
-                    )
-                  }
-                })
-              }, [messages])
-
+                } else {
+                  return (
+                    <Message
+                      key={index}
+                      showUser={showSender}
+                      color='white'
+                      background='linear-gradient(to bottom, #396afc, #2948ff)'
+                      user={message.from}
+                      time={message.time}
+                      message={message.message}
+                    />
+                  )
+                }
+                return true
+              }
+              )
             }
           </div>
         </div>

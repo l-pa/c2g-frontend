@@ -1,7 +1,7 @@
 import React from 'react'
 import Iframe from 'react-iframe'
 
-import { Button, Row, Col } from 'antd'
+import { Button } from 'antd'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 
 import Noty from 'noty'

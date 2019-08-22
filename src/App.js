@@ -33,6 +33,9 @@ const room = 'abc123'
 const { Title } = Typography
 const { Option } = Select
 
+console.log(socket)
+
+
 socket.on('notification', function (object) {
   // Connected, let's sign-up for to receive messages for this room
   new Noty({
