@@ -42,9 +42,9 @@ function Message (props) {
               {(() => {
                 if (props.message.match(re)) {
                   if (re.exec(props.message)[1] === 'medic') {
-                    //    var foo = new Audio("https://wiki.teamfortress.com/w/images/8/8d/Demoman_medic03.wav");
-                    //    foo.play()
-                    //    foo = undefined
+                        // var foo = new Audio("https://wiki.teamfortress.com/w/images/8/8d/Demoman_medic03.wav");
+                        // foo.play()
+                        // foo = undefined
 
                     return (
                       <div>

@@ -14,14 +14,13 @@ function isEmpty (str) {
 function Chat (props) {
   const [messages, setMessages] = useState([])
   const [inputText, setInputText] = useState('')
-  
+
   const socket = useContext(SocketContext)
-  
+
   useEffect(() => {
     scrollToBottom()
-    console.log(messages)
   }, [messages])
-  
+
   useEffect(() => {
     socket.on(
       'gotMessage',
@@ -33,58 +32,30 @@ function Chat (props) {
 
   const users = props.users.map((item, i) => {
     if (item) {
-      if (item.owner) {
-        //  props.setOwner(item.id)
-        if (item.id === socket.id) {
-          return <div key={item.id}>
-            <Row className={'user'}>
-              <Col span={3}>
-                <Avatar alt={'Avatar'} src={`https://avatars.dicebear.com/v2/human/${item.username}.svg`} size={'large'} />
-              </Col>
-              <Col span={21}>
-                <Text mark className={'userList'}>{item.username}</Text> <Badge style={{ marginLeft: 5 }} status='success' title={'Room owner'} />
-              </Col>
-            </Row>
-          </div>
-        } else {
-          return <div key={item.id}>
-            <Row className={'user'}>
-              <Col span={3}>
-                <Avatar alt={'Avatar'} src={`https://avatars.dicebear.com/v2/human/${item.username}.svg`} size={'large'} />
-              </Col>
-              <Col span={21}>
-                <Text className={'userList'}>{item.username}</Text> <Badge style={{ marginLeft: 5 }} status='success' title={'Room owner'} />
-              </Col>
-            </Row>
-          </div>
-        }
+      if (item.id === socket.id) {
+        return <div key={item.id}>
+          <Row className={'user'}>
+            <Col span={3}>
+              <Avatar alt={'Avatar'} src={`https://avatars.dicebear.com/v2/human/${item.username}.svg`} size={'large'} />
+            </Col>
+            <Col span={21}>
+              <Text mark className={'userList'}>{item.username}</Text> {item.owner && <Badge style={{ marginLeft: 5 }} status='success' title={'Room owner'} />}
+            </Col>
+          </Row>
+        </div>
       } else {
-        if (item.id === socket.id) {
-          return <div key={item.id}>
-            <Row className={'user'}>
-              <Col span={3}>
-                <Avatar alt={'Avatar'} src={`https://avatars.dicebear.com/v2/human/${item.username}.svg`} size={'large'} />
-              </Col>
-              <Col span={21}>
-                <Text mark className={'userList'}>{item.username}</Text>
-              </Col>
-            </Row>
-          </div>
-        } else {
-          return <div key={item.id}>
-            <Row className={'user'}>
-              <Col span={3}>
-                <Avatar alt={'Avatar'} src={`https://avatars.dicebear.com/v2/human/${item.username}.svg`} size={'large'} />
-              </Col>
-              <Col span={21}>
-                <Text className={'userList'}>{item.username}</Text>
-              </Col>
-            </Row>
-          </div>
-        }
+        return <div key={item.id}>
+          <Row className={'user'}>
+            <Col span={3}>
+              <Avatar alt={'Avatar'} src={`https://avatars.dicebear.com/v2/human/${item.username}.svg`} size={'large'} />
+            </Col>
+            <Col span={21}>
+              <Text className={'userList'}>{item.username}</Text> {item.owner && <Badge style={{ marginLeft: 5 }} status='success' title={'Room owner'} />}
+            </Col>
+          </Row>
+        </div>
       }
     }
-    return true
   }
   )
 
@@ -119,9 +90,8 @@ function Chat (props) {
                   if (!props.history && array[index - 1].from === 'Coub') {
                     showSender = false
                   }
-                }
-
-                if (message.from === socket.id) {
+                }                
+                if (message.userId === socket.id) {
                   return (
                     <Message
                       key={index}
@@ -131,8 +101,7 @@ function Chat (props) {
                       message={message.message}
                     />
                   )
-                }
-                if (message.from === 'System') {
+                } else if (message.userId === 'System' &&  message.from === 'System') {
                   return (
                     <Message
                       key={index}
@@ -144,8 +113,7 @@ function Chat (props) {
                       message={message.message}
                     />
                   )
-                }
-                if (message.from === 'Coub') {
+                } else if (message.userId === 'System' && message.from === 'Coub') {
                   // ios_mosaic
                   const thumbnailLink = message.thumbnail.replace('%{version}', 'tiny')
                   if (props.history) {
@@ -195,6 +163,7 @@ function Chat (props) {
               onPressEnter={event => {
                 if (!isEmpty(inputText)) {
                   socket.emit('message', {
+                    userId: socket.id,
                     from: props.username,
                     message: inputText,
                     time: new Date().toLocaleTimeString('it-IT')
@@ -213,6 +182,7 @@ function Chat (props) {
               onClick={() => {
                 if (!isEmpty(inputText)) {
                   socket.emit('message', {
+                    userId: socket.id,
                     from: props.username,
                     message: inputText,
                     time: new Date().toLocaleTimeString('it-IT')
