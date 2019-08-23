@@ -6,7 +6,7 @@ const re = /:([\w]+):/g
 
 function Message (props) {
   const [matched, setMatched] = useState(false)
-  const [gif, setGif] = useState(null)
+  const [gif, setGif] = useState([])
 
   useEffect(() => {
     if (props.message.match(re)) {
@@ -21,22 +21,126 @@ function Message (props) {
         switch (element) {
           case ':medic:':
             new Audio('https://wiki.teamfortress.com/w/images/8/8d/Demoman_medic03.wav').play()
-            setGif('https://media.giphy.com/media/WseBPTW8tmlr2/giphy.gif')
+            setGif(gif => gif.concat(<img src={'https://media.giphy.com/media/WseBPTW8tmlr2/giphy.gif'} width={'100%'} height={'100%'} style={{ borderRadius: 5 }} alt='gif...' onLoad={() => {
+              animateScroll.scrollToBottom({
+                containerId: 'messagesChat',
+                delay: 0,
+                duration: 100
+              })
+            }} />))
             break
 
           case ':gachi:':
             new Audio('https://www.myinstants.com/media/sounds/rip-ears.mp3').play()
-            setGif('https://cdn.betterttv.net/emote/59143b496996b360ff9b807c/3x')
+            setGif(gif => gif.concat(<img src={'https://cdn.betterttv.net/emote/59143b496996b360ff9b807c/3x'} width={'90px'} height={'100%'} style={{ borderRadius: 5 }} alt='gif...' onLoad={() => {
+              animateScroll.scrollToBottom({
+                containerId: 'messagesChat',
+                delay: 0,
+                duration: 100
+              })
+            }} />))
             break
 
+          case ':clap:':
+            new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            setGif(gif => gif.concat(<img src={'https://cdn.betterttv.net/emote/55b6f480e66682f576dd94f5/3x'} width={'90px'} height={'100%'} style={{ borderRadius: 5 }} alt='gif...' onLoad={() => {
+              animateScroll.scrollToBottom({
+                containerId: 'messagesChat',
+                delay: 0,
+                duration: 100
+              })
+            }} />))
+            break
+          case ':bass:':
+            //   new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            setGif(gif => gif.concat(<img src={'https://cdn.betterttv.net/emote/5c393177fb40bc09d7c6c3aa/3x'} width={'90px'} height={'100%'} style={{ borderRadius: 5 }} alt='gif...' onLoad={() => {
+              animateScroll.scrollToBottom({
+                containerId: 'messagesChat',
+                delay: 0,
+                duration: 100
+              })
+            }} />))
+            break
+          case ':ja:':
+            //   new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            setGif(gif => gif.concat(<img src={'https://cdn.betterttv.net/emote/59f4e1432c047947fb7e0c7b/3x'} width={'90px'} height={'100%'} style={{ borderRadius: 5 }} alt='gif...' onLoad={() => {
+              animateScroll.scrollToBottom({
+                containerId: 'messagesChat',
+                delay: 0,
+                duration: 100
+              })
+            }} />))
+            break
+          case ':xd:':
+            //   new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            setGif(gif => gif.concat(<img src={'https://discordemoji.com/assets/emoji/xd.gif'} width={'90px'} height={'100%'} style={{ borderRadius: 5 }} alt='gif...' onLoad={() => {
+              animateScroll.scrollToBottom({
+                containerId: 'messagesChat',
+                delay: 0,
+                duration: 100
+              })
+            }} />))
+            break
+          case ':help:':
+            //   new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            setGif(gif => gif.concat(<img src={'https://discordemoji.com/assets/emoji/3925_help.gif'} width={'90px'} height={'100%'} style={{ borderRadius: 5 }} alt='gif...' onLoad={() => {
+              animateScroll.scrollToBottom({
+                containerId: 'messagesChat',
+                delay: 0,
+                duration: 100
+              })
+            }} />))
+            break
+          case ':pingu:':
+            //   new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            setGif(gif => gif.concat(<img src={'https://discordemoji.com/assets/emoji/Nootnoot.gif'} width={'90px'} height={'100%'} style={{ borderRadius: 5 }} alt='gif...' onLoad={() => {
+              animateScroll.scrollToBottom({
+                containerId: 'messagesChat',
+                delay: 0,
+                duration: 100
+              })
+            }} />))
+            break
+          case ':pear:':
+            //   new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            setGif(gif => gif.concat(<img src={'https://discordemoji.com/assets/emoji/PearThink.png'} width={'90px'} height={'100%'} style={{ borderRadius: 5 }} alt='gif...' onLoad={() => {
+              animateScroll.scrollToBottom({
+                containerId: 'messagesChat',
+                delay: 0,
+                duration: 100
+              })
+            }} />))
+            break
+          case ':mm:':
+            //   new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            setGif(gif => gif.concat(<img src={'https://discordemoji.com/assets/emoji/1102_belledell1.gif'} width={'90px'} height={'100%'} style={{ borderRadius: 5 }} alt='gif...' onLoad={() => {
+              animateScroll.scrollToBottom({
+                containerId: 'messagesChat',
+                delay: 0,
+                duration: 100
+              })
+            }} />))
+            break
           case ':aaa:':
             new Audio('https://www.myinstants.com/media/sounds/five-nights-at-freddys-full-scream-sound_1.mp3').play()
-            setGif('https://media.giphy.com/media/IaWnztH7MR0jGZUVXx/giphy.gif')
+            setGif(gif => gif.concat(<img src={'https://media.giphy.com/media/IaWnztH7MR0jGZUVXx/giphy.gif'} width={'100%'} height={'100%'} style={{ borderRadius: 5 }} alt='gif...' onLoad={() => {
+              animateScroll.scrollToBottom({
+                containerId: 'messagesChat',
+                delay: 0,
+                duration: 100
+              })
+            }} />))
             break
 
           default:
             new Audio('https://www.myinstants.com/media/sounds/spongebob-fail.mp3').play()
-            setGif('https://media.giphy.com/media/OKEYg2ISpaedy/giphy.gif')
+            setGif(gif => gif.concat(<img src={'https://media.giphy.com/media/OKEYg2ISpaedy/giphy.gif'} width={'100%'} height={'100%'} style={{ borderRadius: 5 }} alt='gif...' onLoad={() => {
+              animateScroll.scrollToBottom({
+                containerId: 'messagesChat',
+                delay: 0,
+                duration: 100
+              })
+            }} />))
             break
         }
       }
@@ -81,13 +185,11 @@ function Message (props) {
               {(() => {
                 if (matched) {
                   return (
-                    <img src={gif} width={'100%'} style={{ borderRadius: 5 }} alt='gif...' onLoad={() => {
-                      animateScroll.scrollToBottom({
-                        containerId: 'messagesChat',
-                        delay: 0,
-                        duration: 100
-                      })
-                    }} />
+                    <div>
+                      {gif.map((i) => {
+                        return (i)
+                      })}
+                    </div>
                   )
                 }
                 if (props.thumbnail) {
