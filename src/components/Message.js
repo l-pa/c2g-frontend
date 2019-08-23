@@ -1,9 +1,48 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Avatar, Row, Col } from 'antd'
+import { animateScroll } from 'react-scroll'
 
 const re = /:([\w]+):/g
 
 function Message (props) {
+  const [matched, setMatched] = useState(false)
+  const [gif, setGif] = useState(null)
+
+  useEffect(() => {
+    if (props.message.match(re)) {
+      setMatched(true)
+      const a = props.message.match(re)
+      console.log(a)
+
+      for (let i = 0; i < a.length; i++) {
+        const element = a[i]
+        console.log(element)
+
+        switch (element) {
+          case ':medic:':
+            new Audio('https://wiki.teamfortress.com/w/images/8/8d/Demoman_medic03.wav').play()
+            setGif('https://media.giphy.com/media/WseBPTW8tmlr2/giphy.gif')
+            break
+
+          case ':gachi:':
+            new Audio('https://www.myinstants.com/media/sounds/rip-ears.mp3').play()
+            setGif('https://cdn.betterttv.net/emote/59143b496996b360ff9b807c/3x')
+            break
+
+          case ':aaa:':
+            new Audio('https://www.myinstants.com/media/sounds/five-nights-at-freddys-full-scream-sound_1.mp3').play()
+            setGif('https://media.giphy.com/media/IaWnztH7MR0jGZUVXx/giphy.gif')
+            break
+
+          default:
+            new Audio('https://www.myinstants.com/media/sounds/spongebob-fail.mp3').play()
+            setGif('https://media.giphy.com/media/OKEYg2ISpaedy/giphy.gif')
+            break
+        }
+      }
+    }
+  }, [])
+
   return (
     <div className='message-box' style={{ marginLeft: 10 }}>
       <div
@@ -32,7 +71,7 @@ function Message (props) {
                 marginBottom: 3,
                 fontWeight: 'bold',
                 borderRadius: 10,
-        //        wordBreak: 'break-all',
+                //        wordBreak: 'break-all',
                 padding: 7,
                 borderStyle: 'solid',
                 borderColor: '#A9A9A9',
@@ -40,20 +79,16 @@ function Message (props) {
               }}
             >
               {(() => {
-                if (props.message.match(re)) {
-                  if (re.exec(props.message)[1] === 'medic') {
-                        // var foo = new Audio("https://wiki.teamfortress.com/w/images/8/8d/Demoman_medic03.wav");
-                        // foo.play()
-                        // foo = undefined
-
-                    return (
-                      <div>
-                        Cakal ze bude spamovat MEDIC haha, nefunguje, tak nebude
-                        spamovat.
-                      </div>
-                    )
-                  }
-                  return re.exec(props.message)[1]
+                if (matched) {
+                  return (
+                    <img src={gif} width={'100%'} style={{ borderRadius: 5 }} alt='gif...' onLoad={() => {
+                      animateScroll.scrollToBottom({
+                        containerId: 'messagesChat',
+                        delay: 0,
+                        duration: 100
+                      })
+                    }} />
+                  )
                 }
                 if (props.thumbnail) {
                   return (

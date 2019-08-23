@@ -90,7 +90,7 @@ function Chat (props) {
                   if (!props.history && array[index - 1].from === 'Coub') {
                     showSender = false
                   }
-                }                
+                }
                 if (message.userId === socket.id) {
                   return (
                     <Message
@@ -101,7 +101,7 @@ function Chat (props) {
                       message={message.message}
                     />
                   )
-                } else if (message.userId === 'System' &&  message.from === 'System') {
+                } else if (message.userId === 'System' && message.from === 'System') {
                   return (
                     <Message
                       key={index}
