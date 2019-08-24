@@ -12,22 +12,22 @@
 }
 /* unvisited link */
 a:link {
-  color: white;
+  color: red;
 }
 
 /* visited link */
 a:visited {
-  color: white;
+  color: red;
 }
 
 /* mouse over link */
 a:hover {
-  color: white;
+  color: red;
 }
 
 /* selected link */
 a:active {
-  color: white;
+  color: red;
 }
 
 .userList{

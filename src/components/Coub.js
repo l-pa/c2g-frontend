@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Iframe from 'react-iframe'
 
-import { Button, Icon, Modal } from 'antd'
+import { Button, Icon, Row, Col, Typography, Statistic } from 'antd'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 
 import Noty from 'noty'
@@ -9,29 +9,49 @@ import '../../node_modules/noty/lib/noty.css'
 import '../../node_modules/noty/lib/themes/metroui.css'
 import SocketContext from '../SocketContext'
 
+const { Title } = Typography
+
 const CoubSocket = props => (
   <SocketContext.Consumer>
     {socket => <Coub {...props} socket={socket} />}
   </SocketContext.Consumer>
 )
 
-class Coub extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = { currentCoub: 'um0um0', keyBind: { prevCoub: 37, nextCoub: 39 }, showKeyBindingModal: this.props.keybindingModal }
-    this.buttonFunction = this.buttonFunction.bind(this)
+function Coub (props) {
+  const [currentCoub, setCurrentCoub] = useState('zrbpy')
+
+  const [coub, setCoub] = useState('')
+  // this.buttonFunction = this.buttonFunction.bind(this)
+
+  function localStorage (key, value) {
+    if (window.localStorage.getItem(key)) {
+      window.localStorage.setItem(key, value)
+    } else {
+      window.localStorage.setItem(key, value)
+    }
   }
 
-  componentDidMount () {
-    this.props.socket.on(
+  
+  useEffect(() => {
+    const buttonFunction = (event) => {
+      if (event.keyCode === 37) {
+        props.socket.emit('reqPrev')
+      }
+  
+      if (event.keyCode === 39) {
+        props.socket.emit('reqNext')
+      }
+    }
+    props.socket.on(
       'gotCoub',
       function (nextCoub) {
         // Connected, let's sign-up for to receive messages for this room
 
-        this.props.setLoading(false)
-        console.log(nextCoub)
+        props.setLoading(false)
         if (nextCoub) {
-          this.setState({ currentCoub: nextCoub.permalink })
+          console.log(nextCoub)
+          setCoub(nextCoub)
+          setCurrentCoub(nextCoub.permalink)
           new Noty({
             theme: 'metroui',
             type: 'success',
@@ -39,87 +59,80 @@ class Coub extends React.Component {
             timeout: 1000,
             text: nextCoub.title
           }).show()
+          localStorage('latestCoub', nextCoub)
         }
-      }.bind(this)
+      }
     )
-    document.addEventListener('keydown', this.buttonFunction, false)
-  }
-
-  componentWillUnmount () {
-    document.removeEventListener('keydown', this.buttonFunction, false)
-  }
-
-  buttonFunction (event) {
-    console.log(event)
-    if (event.keyCode === this.state.keyBind.prevCoub) {
-      this.props.socket.emit('reqPrev')
+    document.addEventListener('keydown', buttonFunction, false)
+    return () => {
+      document.removeEventListener('keydown', buttonFunction, false)
     }
-
-    if (event.keyCode === this.state.keyBind.nextCoub) {
-      this.props.socket.emit('reqNext')
-    }
-  }
+  }, [])
 
   // http://coub.com/embed/um0um0?muted=false&autostart=true&originalSize=false&hideTopBar=false&startWithHD=false
-  render () {
-    console.log(this.state)
 
-    return (
-      <div className='coub'>
-
-        <Modal
-          visible={this.state.showKeyBindingModal}
-          title='Key bindings'
-          footer={[
-            <Button
-              key='submit'
-              type='primary'
-              onClick={value => {
-
-              }}
-            >
-            Save
-              <Icon type='user' />
-            </Button>
-          ]}
+  return (
+    <div className='coub'>
+      <Title level={2} style={{ marginLeft: '1em' }}>{coub.title}</Title>
+      <Iframe
+        frameBorder={0}
+        url={`http://coub.com/embed/${currentCoub}?muted=false&autostart=true&originalSize=false&hideTopBar=false&startWithHD=false`}
+        width='100%'
+        height='500px'
+        id='coubVideo'
+        className='myClassname'
+        title={'Coub video'}
+      />
+      <br />
+      <Row >
+        <Col span={5}>
+          <Statistic valueStyle={{ fontSize: '1em' }} title='Date' value={new Date(coub.created_at).toLocaleDateString()} prefix={<Icon type='calendar' />} />
+        </Col>
+        <Col span={5}>
+          <Statistic title='Views' value={coub.views_count} prefix={<Icon type='play-circle' />} />
+        </Col>
+        <Col span={5}>
+          <Statistic title='Likes' value={coub.likes_count} prefix={<Icon type='like' />} />
+        </Col>
+        {coub.external_download &&
+        <Col span={5}>
+          <Statistic title={coub.external_download.service_name} prefix={
+            coub.external_download.service_name === 'YouTube'
+              ? <a href={coub.external_download.url} target={'_blank'}>
+                <Icon type='youtube' />
+              </a>
+              : <a href={coub.external_download.url} target={'_blank'}>
+                <Icon type='video-camera' />
+              </a>} value={' '} />
+        </Col>
+        }
+      </Row>
+      <br />
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Button
+          style={{ margin: 5 }}
+          block
+          size='large'
+          icon='left-circle'
+          shape='round'
+          onClick={() => {
+            props.socket.emit('reqPrev')
+          }}
         />
 
-        <Iframe
-          frameBorder={0}
-          url={`http://coub.com/embed/${this.state.currentCoub}?muted=false&autostart=true&originalSize=false&hideTopBar=false&startWithHD=false`}
-          width='100%'
-          height='600px'
-          id='coubVideo'
-          className='myClassname'
-          title={'Coub video'}
+        <Button
+          style={{ margin: 5 }}
+          block
+          size='large'
+          icon='right-circle'
+          shape='round'
+          onClick={() => {
+            props.socket.emit('reqNext')
+          }}
         />
-        <br />
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button
-            style={{ margin: 5 }}
-            block
-            size='large'
-            icon='left-circle'
-            shape='round'
-            onClick={() => {
-              this.props.socket.emit('reqPrev')
-            }}
-          />
-
-          <Button
-            style={{ margin: 5 }}
-            block
-            size='large'
-            icon='right-circle'
-            shape='round'
-            onClick={() => {
-              this.props.socket.emit('reqNext')
-            }}
-          />
-        </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default CoubSocket

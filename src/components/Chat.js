@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Input, Avatar, Divider, Button, Row, Col, Badge, Typography } from 'antd'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { animateScroll } from 'react-scroll'
@@ -28,7 +28,7 @@ function Chat (props) {
         setMessages(messages => messages.concat(message)) //  /facebook/react/issues/15041
       }
     )
-  }, [])
+  }, [socket])
 
   const users = props.users.map((item, i) => {
     if (item) {
@@ -59,6 +59,7 @@ function Chat (props) {
         </div>
       }
     }
+    return true
   }
   )
 

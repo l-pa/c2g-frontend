@@ -144,7 +144,7 @@ function Message (props) {
         }
       }
     }
-  }, [])
+  }, [props.message])
 
   return (
     <div className='message-box' style={{ marginLeft: 10 }}>

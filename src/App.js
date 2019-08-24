@@ -33,9 +33,6 @@ const room = 'abc123'
 const { Title } = Typography
 const { Option } = Select
 
-console.log(socket)
-
-
 socket.on('notification', function (object) {
   // Connected, let's sign-up for to receive messages for this room
   new Noty({
@@ -62,7 +59,6 @@ function App () {
   const [darkMode, setDarkMode] = useState(false)
   const [showHistory, setShowHistory] = useState(false)
   const [showModal, setShowModal] = useState(false)
-  const [showModalKeyBindingModal, setShowModalKeyBindingModal] = useState(false)
 
   const [usernameInput, setUsernameInput] = useState('')
   const [usernameError, setUsernameError] = useState(false)
@@ -400,20 +396,7 @@ function App () {
                 <Icon type='lock' theme='twoTone' twoToneColor='#FFD700' />
               </Checkbox>
             }
-            
-            <Button
-              block
-              size='small'
-              shape='round'
-              icon='settings'
-              type='default'
-              style={{ }}
-              onClick={() => {
-                setShowModalKeyBindingModal(true)
-              }}
-            >
-              Key bindings
-            </Button>
+            <br></br>
             <Checkbox
               disabled
               onChange={() => {
@@ -446,11 +429,11 @@ function App () {
         </Col>
         <Col md={{ span: 12 }}>
           <SocketContext.Provider value={socket}>
-            <Coub setLoading={setLoadingProp} keybindingModal={showModalKeyBindingModal} />
+            <Coub setLoading={setLoadingProp} />
           </SocketContext.Provider>
         </Col>
         <Col md={{ span: 8 }}>
-          <SocketContext.Provider value={socket}>  
+          <SocketContext.Provider value={socket}>
             <Chat username={username} history={showHistory} users={users} setOwner={setOwnerProp} />
           </SocketContext.Provider>
         </Col>
