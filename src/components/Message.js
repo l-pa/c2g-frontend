@@ -12,7 +12,6 @@ function Message (props) {
     if (props.message.match(re)) {
       setMatched(true)
       const a = props.message.match(re)
-      console.log(a)
 
       for (let i = 0; i < a.length; i++) {
         const element = a[i]

@@ -32,6 +32,9 @@ function Chat (props) {
 
   const users = props.users.map((item, i) => {
     if (item) {
+      if (item.owner) {
+        props.setOwner(item.id)
+      }
       if (item.id === socket.id) {
         return <div key={item.id}>
           <Row className={'user'}>

@@ -1,7 +1,7 @@
 import React from 'react'
 import Iframe from 'react-iframe'
 
-import { Button } from 'antd'
+import { Button, Icon, Modal } from 'antd'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 
 import Noty from 'noty'
@@ -18,8 +18,8 @@ const CoubSocket = props => (
 class Coub extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { countPlayed: 0, loadedCoub: false, currentCoub: 'um0um0' }
-    console.log(props)
+    this.state = { currentCoub: 'um0um0', keyBind: { prevCoub: 37, nextCoub: 39 }, showKeyBindingModal: this.props.keybindingModal }
+    this.buttonFunction = this.buttonFunction.bind(this)
   }
 
   componentDidMount () {
@@ -42,12 +42,48 @@ class Coub extends React.Component {
         }
       }.bind(this)
     )
+    document.addEventListener('keydown', this.buttonFunction, false)
+  }
+
+  componentWillUnmount () {
+    document.removeEventListener('keydown', this.buttonFunction, false)
+  }
+
+  buttonFunction (event) {
+    console.log(event)
+    if (event.keyCode === this.state.keyBind.prevCoub) {
+      this.props.socket.emit('reqPrev')
+    }
+
+    if (event.keyCode === this.state.keyBind.nextCoub) {
+      this.props.socket.emit('reqNext')
+    }
   }
 
   // http://coub.com/embed/um0um0?muted=false&autostart=true&originalSize=false&hideTopBar=false&startWithHD=false
   render () {
+    console.log(this.state)
+
     return (
       <div className='coub'>
+
+        <Modal
+          visible={this.state.showKeyBindingModal}
+          title='Key bindings'
+          footer={[
+            <Button
+              key='submit'
+              type='primary'
+              onClick={value => {
+
+              }}
+            >
+            Save
+              <Icon type='user' />
+            </Button>
+          ]}
+        />
+
         <Iframe
           frameBorder={0}
           url={`http://coub.com/embed/${this.state.currentCoub}?muted=false&autostart=true&originalSize=false&hideTopBar=false&startWithHD=false`}
