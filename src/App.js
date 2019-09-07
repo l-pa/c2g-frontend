@@ -59,6 +59,7 @@ function App () {
   const [darkMode, setDarkMode] = useState(false)
   const [showHistory, setShowHistory] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [debug, setDebug] = useState(false)
 
   const [usernameInput, setUsernameInput] = useState('')
   const [usernameError, setUsernameError] = useState(false)
@@ -392,19 +393,19 @@ function App () {
                   socket.emit('lock')
                 }}
               >
-              Lock room
                 <Icon type='lock' theme='twoTone' twoToneColor='#FFD700' />
+              Lock room
               </Checkbox>
             }
-            <br></br>
+            <br />
             <Checkbox
               disabled
               onChange={() => {
                 // TODO
               }}
             >
-              Dark mode
               <Icon type='eye' theme='twoTone' twoToneColor='#808080' />
+              Dark mode
             </Checkbox>
             <br />
             <Checkbox
@@ -412,8 +413,16 @@ function App () {
                 setShowHistory(value.target.checked)
               }}
             >
-              Show history
               <Icon type='book' theme='twoTone' twoToneColor='#808080' />
+              Show history
+            </Checkbox>
+            <Divider />
+            <Checkbox
+              onChange={() => {
+                setDebug(debug => !debug)
+              }}
+            >
+              Debug
             </Checkbox>
             <Divider />
             <Title level={4}>Stats</Title>
@@ -434,7 +443,7 @@ function App () {
         </Col>
         <Col md={{ span: 8 }}>
           <SocketContext.Provider value={socket}>
-            <Chat username={username} history={showHistory} users={users} setOwner={setOwnerProp} />
+            <Chat username={username} debug={debug} history={showHistory} users={users} setOwner={setOwnerProp} />
           </SocketContext.Provider>
         </Col>
       </Row>

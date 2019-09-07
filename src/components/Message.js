@@ -9,7 +9,7 @@ function Message (props) {
   const [gif, setGif] = useState([])
 
   useEffect(() => {
-    if (props.message.match(re)) {
+    if (props.userId !== 'System' && props.message.match(re)) {
       setMatched(true)
       const a = props.message.match(re)
 

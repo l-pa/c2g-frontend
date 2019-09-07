@@ -101,6 +101,7 @@ function Chat (props) {
                       key={index}
                       showUser={showSender}
                       user={message.from}
+                      userId={message.userId}
                       time={message.time}
                       message={message.message}
                     />
@@ -113,10 +114,26 @@ function Chat (props) {
                       color='white'
                       background='radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%)'
                       user={message.from}
+                      userId={message.userId}
                       time={message.time}
                       message={message.message}
                     />
                   )
+                } else if (message.userId === 'System' && message.from === 'Debug') {
+                  console.log(message)
+                  if (props.debug) {
+                    return (
+                      <Message
+                        key={index}
+                        showUser={showSender}
+                        color='black'
+                        user={message.from}
+                        userId={message.userId}
+                        time={message.time}
+                        message={`${message.message} \n UserId ${message.userId} \n User ${message.username}`}
+                      />
+                    )
+                  }
                 } else if (message.userId === 'System' && message.from === 'Coub') {
                   // ios_mosaic
                   const thumbnailLink = message.thumbnail.replace('%{version}', 'tiny')
@@ -130,6 +147,7 @@ function Chat (props) {
                         color='white'
                         background='linear-gradient(to top, #141e30, #243b55)'
                         user={message.from}
+                        userId={message.userId}
                         time={message.time}
                         message={message.message}
                       />
@@ -143,6 +161,7 @@ function Chat (props) {
                       color='white'
                       background='linear-gradient(to bottom, #396afc, #2948ff)'
                       user={message.from}
+                      userId={message.userId}
                       time={message.time}
                       message={message.message}
                     />
