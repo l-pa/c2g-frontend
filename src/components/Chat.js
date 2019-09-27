@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { Input, Avatar, Divider, Button, Row, Col, Badge, Typography } from 'antd'
+import React, { useState, useEffect, useContext, useRef } from 'react'
+import { Input, Avatar, Divider, Button, Row, Col, Badge, Typography, Mentions } from 'antd'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { animateScroll } from 'react-scroll'
 import SocketContext from '../SocketContext'
 import Message from './Message.js'
 
 const { Text } = Typography
+const { Option } = Mentions
+
+const dataSource = [':gachi:', ':medic:']
 
 function isEmpty (str) {
   return str.replace(/^\s+|\s+$/gm, '').length === 0
@@ -120,7 +123,6 @@ function Chat (props) {
                     />
                   )
                 } else if (message.userId === 'System' && message.from === 'Debug') {
-                  console.log(message)
                   if (props.debug) {
                     return (
                       <Message
@@ -177,24 +179,46 @@ function Chat (props) {
         <Divider dashed style={{ marginBottom: 10, marginTop: 0 }} />
         <Row>
           <Col span={22}>
-            <Input
-              onChange={event => {
-                setInputText(event.target.value)
-              }}
+            <Mentions
+              style={{ width: '100%' }}
+              prefix={':'}
               value={inputText}
-              placeholder='Message ...'
-              onPressEnter={event => {
-                if (!isEmpty(inputText)) {
-                  socket.emit('message', {
-                    userId: socket.id,
-                    from: props.username,
-                    message: inputText,
-                    time: new Date().toLocaleTimeString('it-IT')
-                  })
-                  setInputText('')
+              onSelect={(selected) => {
+                setInputText(text => selected.value)                
+              }}
+              placeholder={'Message ...'}
+              onChange={(value) => setInputText(value)
+              }
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                  event.preventDefault()
+                  if (!isEmpty(inputText)) {
+                    socket.emit('message', {
+                      userId: socket.id,
+                      from: props.username,
+                      message: inputText,
+                      time: new Date().toLocaleTimeString('it-IT')
+                    })
+                    setInputText('')
+                  }
                 }
               }}
-            />
+            >
+              <Option value=':medic:'>MEDIC</Option>
+              <Option value=':xd:'>XD</Option>
+              <Option value=':pear:'>🍐</Option>
+              <Option value=':mm:'>mmm</Option>
+              <Option value=':smart:'>Tk tk</Option>
+              <Option value=':gachi:'>GACHI</Option>
+              <Option value=':clap:'>clap</Option>
+              <Option value=':ja:'>rgb</Option>
+              <Option value=':bass:'>DUDUDU</Option>
+              <Option value=':help:'>pls</Option>
+              <Option value=':pingu:'>DA WA J</Option>
+              <Option value=':aaa:'>AAA</Option>
+
+            </Mentions>
+
           </Col>
           <Col span={2} push={1}>
             <Button

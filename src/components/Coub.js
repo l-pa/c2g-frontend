@@ -86,17 +86,17 @@ function Coub (props) {
       <br />
       <Row >
         <Col span={5}>
-          <Statistic valueStyle={{ fontSize: '1em' }} title='Date' value={new Date(coub.created_at).toLocaleDateString()} prefix={<Icon type='calendar' />} />
+          <Statistic valueStyle={{ fontSize: '1em' }} title='Date' value={new Date(coub.created_at).toLocaleDateString()} suffix={<Icon type='calendar' />} />
         </Col>
         <Col span={5}>
-          <Statistic title='Views' value={coub.views_count} prefix={<Icon type='play-circle' />} />
+          <Statistic title='Views' value={coub.views_count} suffix={<Icon type='play-circle' />} />
         </Col>
         <Col span={5}>
-          <Statistic title='Likes' value={coub.likes_count} prefix={<Icon type='like' />} />
+          <Statistic title='Likes' value={coub.likes_count} suffix={<Icon type='like' />} />
         </Col>
         {coub.external_download &&
         <Col span={5}>
-          <Statistic title={coub.external_download.service_name} prefix={
+          <Statistic title={coub.external_download.service_name} suffix={
             coub.external_download.service_name === 'YouTube'
               ? <a href={coub.external_download.url} target={'_blank'}>
                 <Icon type='youtube' />
