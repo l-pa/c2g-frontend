@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext, useRef } from 'react'
 import { Input, Avatar, Divider, Button, Row, Col, Badge, Typography, Mentions } from 'antd'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { animateScroll } from 'react-scroll'
-import SocketContext from '../SocketContext'
 import Message from './Message.js'
 
 const { Text } = Typography
@@ -18,7 +17,7 @@ function Chat (props) {
   const [messages, setMessages] = useState([])
   const [inputText, setInputText] = useState('')
 
-  const socket = useContext(SocketContext)
+  const socket = props.socket
 
   useEffect(() => {
     scrollToBottom()

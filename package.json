@@ -1,15 +1,15 @@
 {
   "name": "frontend-c2g",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "antd": "^3.20.7",
-    "babel-loader": "8.0.5",
     "noty": "^3.2.0-beta",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-iframe": "^1.8.0",
-    "react-scripts": "3.0.1",
+    "react-player": "^1.15.2",
+    "react-scripts": "^3.4.0",
     "react-scroll": "^1.7.12",
     "socket.io-client": "^2.2.0"
   },
@@ -17,9 +17,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "eject": "react-scripts eject"
   },
   "browserslist": {
     "production": [
@@ -33,13 +31,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@storybook/addon-actions": "^5.1.10",
-    "@storybook/addon-links": "^5.1.10",
-    "@storybook/addons": "^5.1.10",
-    "@storybook/react": "^5.1.10",
-    "prettier": "^1.18.2",
-    "standard": "^13.1.0"
-  }
+  "devDependencies": {}
 }

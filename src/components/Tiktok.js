@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Iframe from 'react-iframe'
+import ReactPlayer from 'react-player'
 
 import { Button, Icon, Row, Col, Typography, Statistic } from 'antd'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
@@ -10,22 +10,15 @@ import '../../node_modules/noty/lib/themes/metroui.css'
 
 const { Title } = Typography
 
-function Coub (props) {
-  console.log('rerendered coub');
+function Tiktok (props) {
+
+  console.log(props);
   
-  const [currentCoub, setCurrentCoub] = useState('zrbpy')
 
-  const [coub, setCoub] = useState('')
+  const [currentTiktok, setCurrentTiktok] = useState('idk')
+
+  const [tiktok, setTiktok] = useState('')
   // this.buttonFunction = this.buttonFunction.bind(this)
-
-  function localStorage (key, value) {
-    if (window.localStorage.getItem(key)) {
-      window.localStorage.setItem(key, value)
-    } else {
-      window.localStorage.setItem(key, value)
-    }
-  }
-
   
   useEffect(() => {
     const buttonFunction = (event) => {
@@ -38,58 +31,36 @@ function Coub (props) {
       }
     }
     props.socket.on(
-      'gotCoub',
-      function (nextCoub) {
-        // Connected, let's sign-up for to receive messages for this room
+      'gotTiktok',
+      function (nextTiktok) {
         props.setLoading(false)
-        if (nextCoub) {
-          console.log(nextCoub)
-          setCoub(nextCoub)
-          setCurrentCoub(nextCoub.permalink)
-          new Noty({
-            theme: 'metroui',
-            type: 'success',
-            layout: 'centerRight',
-            timeout: 1000,
-            text: nextCoub.title
-          }).show()
-          localStorage('latestCoub', nextCoub)
-        }
+        console.log(nextTiktok);
+        setTiktok(nextTiktok)
       }
     )
     document.addEventListener('keydown', buttonFunction, false)
     return () => {
       document.removeEventListener('keydown', buttonFunction, false)
-      props.socket.off('gotCoub')
+      props.socket.off('gotTiktok')
     }
   }, [])
 
-  // http://coub.com/embed/um0um0?muted=false&autostart=true&originalSize=false&hideTopBar=false&startWithHD=false
-
   return (
     <div className='coub'>
-      <Title level={2} style={{ marginLeft: '1em' }}>{coub.title}</Title>
-      <Iframe
-        frameBorder={0}
-        url={`http://coub.com/embed/${currentCoub}?muted=false&autostart=true&originalSize=false&hideTopBar=false&startWithHD=false`}
-        width='100%'
-        height='500px'
-        id='coubVideo'
-        className='myClassname'
-        title={'Coub video'}
-      />
+      <Title level={2} style={{ marginLeft: '1em' }}>{tiktok.text}</Title>
+      <ReactPlayer height="500px" url={tiktok.videoUrl} loop controls playing />
       <br />
       <Row >
         <Col span={5}>
-          <Statistic valueStyle={{ fontSize: '1em' }} title='Date' value={new Date(coub.created_at).toLocaleDateString()} suffix={<Icon type='calendar' />} />
+          {/* <Statistic valueStyle={{ fontSize: '1em' }} title='Date' value={new Date(coub.created_at).toLocaleDateString()} suffix={<Icon type='calendar' />} /> */}
         </Col>
         <Col span={5}>
-          <Statistic title='Views' value={coub.views_count} suffix={<Icon type='play-circle' />} />
+          {/* <Statistic title='Views' value={coub.views_count} suffix={<Icon type='play-circle' />} /> */}
         </Col>
         <Col span={5}>
-          <Statistic title='Likes' value={coub.likes_count} suffix={<Icon type='like' />} />
+          {/* <Statistic title='Likes' value={coub.likes_count} suffix={<Icon type='like' />} /> */}
         </Col>
-        {coub.external_download &&
+        {/* {coub.external_download &&
         <Col span={5}>
           <Statistic title={coub.external_download.service_name} suffix={
             coub.external_download.service_name === 'YouTube'
@@ -101,6 +72,7 @@ function Coub (props) {
               </a>} value={' '} />
         </Col>
         }
+         */}
       </Row>
       <br />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -130,4 +102,4 @@ function Coub (props) {
   )
 }
 
-export default Coub
+export default Tiktok

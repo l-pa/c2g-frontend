@@ -16,6 +16,7 @@ import {
 } from 'antd'
 import Noty from 'noty'
 import Coub from './components/Coub'
+import Tiktok from './components/Tiktok'
 import Chat from './components/Chat'
 
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
@@ -25,8 +26,8 @@ import SocketContext from './SocketContext'
 import '../node_modules/noty/lib/noty.css'
 import '../node_modules/noty/lib/themes/metroui.css'
 
-const socket = require('socket.io-client')('https://c2gbb.herokuapp.com/')
-// const socket = require('socket.io-client')('http://localhost:8080')
+// const socket = require('socket.io-client')('https://c2gbb.herokuapp.com/')
+const socket = require('socket.io-client')('http://localhost:8080')
 
 const room = 'abc123'
 
@@ -53,6 +54,8 @@ function App () {
   const [roomOwner, setRoomOwner] = useState('')
   const [category, setCategory] = useState('')
   const [sort, setSort] = useState('')
+  const [platform, setPlatform] = useState('coub')
+
   const [channelName, setChannelName] = useState('')
   const [hashtag, setHashtag] = useState('')
   const [coubCount, setCoubCount] = useState(0)
@@ -96,30 +99,19 @@ function App () {
   }
   setOwnerProp.bind(this)
 
-  function useEffectSkipFirst (fn, arr) {
-    const isFirst = useRef(true)
-
-    useEffect(() => {
-      if (isFirst.current) {
-        isFirst.current = false
-        return
-      }
-
-      fn()
-    }, arr)
-  }
-
-  useEffectSkipFirst(
+  useEffect(
     () => {
-      console.log(category, sort)
+      console.log(platform);
+      
       socket.emit('category', {
+        platform: platform,
         category: category,
         sort: sort,
         channel: channelName,
         hashtag: hashtag
       })
     },
-    [sort, category, channelName, hashtag]
+    [platform, sort, category, channelName, hashtag]
   )
 
   useEffect(() => {
@@ -196,7 +188,7 @@ function App () {
             {username}
           </Title>
           <Divider />
-          <Title level={4}>Category</Title>
+          <Title level={4}>Coub</Title>
 
           <div className='buttons'>
             <Button
@@ -206,6 +198,7 @@ function App () {
               type='primary'
               block
               onClick={() => {
+                setPlatform('coub')
                 setLoading(true)
                 setCategory('explore')
                 setSort('newest')
@@ -221,6 +214,7 @@ function App () {
               type='danger'
               style={{ marginTop: '1em' }}
               onClick={() => {
+                setPlatform('coub')
                 setLoading(true)
                 setCategory('hot')
                 setSort('likes_count')
@@ -236,6 +230,7 @@ function App () {
               type='danger'
               style={{ marginTop: '1em' }}
               onClick={() => {
+                setPlatform('coub')
                 setLoading(true)
                 setCategory('hashtag')
                 setSort('likes_count')
@@ -251,6 +246,7 @@ function App () {
               type='primary'
               style={{ marginTop: '1em' }}
               onClick={() => {
+                setPlatform('coub')
                 setLoading(true)
                 setCategory('channel')
                 setSort('likes_count')
@@ -259,6 +255,27 @@ function App () {
               Channel coubs
             </Button>
             <Divider />
+          <Title level={4}>Tiktok</Title>
+
+            <Button
+              block
+              size='large'
+              shape='round'
+              icon='fire'
+              type='primary'
+              style={{ marginTop: '1em',  }}
+              onClick={() => {
+                setLoading(true)
+                setPlatform('tiktok')
+                setCategory('trends')
+                setSort('')
+              }}
+            >
+              Trending
+            </Button>
+            <Divider/>
+            {platform === 'coub' && (
+              <div>
             {category === 'hot' && (
               <div>
                 <Title level={4}>Sort by </Title>
@@ -382,7 +399,8 @@ function App () {
                 }} />
                 <Divider />
               </div>
-            )}
+            )} </div> )}
+
             <Title level={4}>Settings</Title>
             {
               roomOwner === socket.id &&
@@ -437,14 +455,15 @@ function App () {
           </div>
         </Col>
         <Col md={{ span: 12 }}>
-          <SocketContext.Provider value={socket}>
-            <Coub setLoading={setLoadingProp} />
-          </SocketContext.Provider>
+            { platform === 'coub' && (
+            <Coub setLoading={setLoadingProp} socket={socket} />
+            )}
+            { platform === 'tiktok' && (
+            <Tiktok setLoading={setLoadingProp} socket={socket} />
+            )}
         </Col>
         <Col md={{ span: 8 }}>
-          <SocketContext.Provider value={socket}>
-            <Chat username={username} debug={debug} history={showHistory} users={users} setOwner={setOwnerProp} />
-          </SocketContext.Provider>
+            <Chat socket={socket} username={username} debug={debug} history={showHistory} users={users} setOwner={setOwnerProp} />
         </Col>
       </Row>
     </div>
