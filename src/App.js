@@ -455,6 +455,7 @@ function App () {
           </div>
         </Col>
         <Col md={{ span: 12 }}>
+          {loading && (<div><h1>Loading</h1></div>)}
             { platform === 'coub' && (
             <Coub setLoading={setLoadingProp} socket={socket} />
             )}

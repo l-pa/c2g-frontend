@@ -14,9 +14,6 @@ function Tiktok (props) {
 
   console.log(props);
   
-
-  const [currentTiktok, setCurrentTiktok] = useState('idk')
-
   const [tiktok, setTiktok] = useState('')
   // this.buttonFunction = this.buttonFunction.bind(this)
   
