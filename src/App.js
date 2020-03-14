@@ -17,6 +17,7 @@ import {
 import Noty from 'noty'
 import Coub from './components/Coub'
 import Tiktok from './components/Tiktok'
+import Video from './components/Video'
 import Chat from './components/Chat'
 
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
@@ -45,11 +46,11 @@ socket.on('notification', function (object) {
   }).show()
 })
 
-function isEmpty (str) {
+function isEmpty(str) {
   return str.replace(/^\s+|\s+$/gm, '').length === 0
 }
 
-function App () {
+function App() {
   const [loading, setLoading] = useState(false)
   const [roomOwner, setRoomOwner] = useState('')
   const [category, setCategory] = useState('')
@@ -89,12 +90,16 @@ function App () {
     }
   })
 
-  function setLoadingProp (value) {
+  socket.on('changeCategory', function (category) {
+    setPlatform(category)
+  })
+
+  function setLoadingProp(value) {
     setLoading(value)
   }
   setLoadingProp.bind(this)
 
-  function setOwnerProp (value) {
+  function setOwnerProp(value) {
     setRoomOwner(value)
   }
   setOwnerProp.bind(this)
@@ -102,7 +107,7 @@ function App () {
   useEffect(
     () => {
       console.log(platform);
-      
+
       socket.emit('category', {
         platform: platform,
         category: category,
@@ -255,7 +260,7 @@ function App () {
               Channel coubs
             </Button>
             <Divider />
-          <Title level={4}>Tiktok</Title>
+            <Title level={4}>Tiktok</Title>
 
             <Button
               block
@@ -263,7 +268,7 @@ function App () {
               shape='round'
               icon='fire'
               type='primary'
-              style={{ marginTop: '1em',  }}
+              style={{ marginTop: '1em', }}
               onClick={() => {
                 setLoading(true)
                 setPlatform('tiktok')
@@ -273,133 +278,151 @@ function App () {
             >
               Trending
             </Button>
-            <Divider/>
+            <Divider />
+            <Title level={4}>Other</Title>
+
+            <Button
+              block
+              size='large'
+              shape='round'
+              type='primary'
+              style={{ marginTop: '1em', }}
+              onClick={() => {
+                setLoading(true)
+                setPlatform('video')
+                setCategory('')
+                setSort('')
+              }}
+            >
+              Vydeo
+            </Button>
+            <Divider />
             {platform === 'coub' && (
               <div>
-            {category === 'hot' && (
-              <div>
-                <Title level={4}>Sort by </Title>
-                <Select
-                  defaultValue='likes_count'
-                  style={{ width: '100%' }}
-                  onChange={value => {
-                    setSort(value)
-                    setLoading(true)
-                  }}
-                >
-                  <Option value='likes_count'>
-                    <Icon type='like' theme='twoTone' />
+                {category === 'hot' && (
+                  <div>
+                    <Title level={4}>Sort by </Title>
+                    <Select
+                      defaultValue='likes_count'
+                      style={{ width: '100%' }}
+                      onChange={value => {
+                        setSort(value)
+                        setLoading(true)
+                      }}
+                    >
+                      <Option value='likes_count'>
+                        <Icon type='like' theme='twoTone' />
                     Likes
                   </Option>
-                  <Option value='views_count'>
-                    <Icon type='thunderbolt' theme='twoTone' />
+                      <Option value='views_count'>
+                        <Icon type='thunderbolt' theme='twoTone' />
                     Views
                   </Option>
-                  <Option value='newest_popular'>
-                    <Icon type='clock-circle' theme='twoTone' />
+                      <Option value='newest_popular'>
+                        <Icon type='clock-circle' theme='twoTone' />
                     Newest popular
                   </Option>
-                  <Option value='oldest'>
-                    <Icon type='calendar' theme='twoTone' />
+                      <Option value='oldest'>
+                        <Icon type='calendar' theme='twoTone' />
                     Oldest
                   </Option>
-                </Select>
-                <Divider />
-              </div>
-            )}
-            {category === 'explore' && (
-              <div>
-                <Title level={4}>Sort by </Title>
-                <Select
-                  defaultValue='newest'
-                  style={{ width: '100%' }}
-                  onChange={value => {
-                    setSort(value)
-                    setLoading(true)
-                  }}
-                >
-                  <Option value='random'>
-                    <Icon type='like' theme='twoTone' />
+                    </Select>
+                    <Divider />
+                  </div>
+                )}
+                {category === 'explore' && (
+                  <div>
+                    <Title level={4}>Sort by </Title>
+                    <Select
+                      defaultValue='newest'
+                      style={{ width: '100%' }}
+                      onChange={value => {
+                        setSort(value)
+                        setLoading(true)
+                      }}
+                    >
+                      <Option value='random'>
+                        <Icon type='like' theme='twoTone' />
                     Random
                   </Option>
-                  <Option value='coub_of_the_day'>
-                    <Icon type='thunderbolt' theme='twoTone' />
+                      <Option value='coub_of_the_day'>
+                        <Icon type='thunderbolt' theme='twoTone' />
                     Coub of the day
                   </Option>
-                  <Option value='newest'>
-                    <Icon type='clock-circle' theme='twoTone' />
+                      <Option value='newest'>
+                        <Icon type='clock-circle' theme='twoTone' />
                     Newest
                   </Option>
-                </Select>
-                <Divider />
-              </div>
-            )}
-            {category === 'channel' && (
-              <div>
-                <Title level={4}>Sort by </Title>
-                <Select
-                  defaultValue='likes_count'
-                  style={{ width: '100%' }}
-                  onChange={value => {
-                    setSort(value)
-                    setLoading(true)
-                  }}
-                >
-                  <Option value='likes_count'>
-                    <Icon type='like' theme='twoTone' />
+                    </Select>
+                    <Divider />
+                  </div>
+                )}
+                {category === 'channel' && (
+                  <div>
+                    <Title level={4}>Sort by </Title>
+                    <Select
+                      defaultValue='likes_count'
+                      style={{ width: '100%' }}
+                      onChange={value => {
+                        setSort(value)
+                        setLoading(true)
+                      }}
+                    >
+                      <Option value='likes_count'>
+                        <Icon type='like' theme='twoTone' />
                     Likes
                   </Option>
-                  <Option value='views_count'>
-                    <Icon type='thunderbolt' theme='twoTone' />
+                      <Option value='views_count'>
+                        <Icon type='thunderbolt' theme='twoTone' />
                     Views
                   </Option>
-                  <Option value='newest_popular'>
-                    <Icon type='clock-circle' theme='twoTone' />
+                      <Option value='newest_popular'>
+                        <Icon type='clock-circle' theme='twoTone' />
                     Newest popular
                   </Option>
-                </Select>
-                <Divider />
-                <Input size='large' placeholder='Channel name' onPressEnter={(event) => {
-                  setChannelName(event.target.value)
-                }} />
-                <Divider />
-              </div>
-            )}
-            {category === 'hashtag' && (
-              <div>
-                <Title level={4}>Sort by </Title>
-                <Select
-                  defaultValue='likes_count'
-                  style={{ width: '100%' }}
-                  onChange={value => {
-                    setSort(value)
-                    setLoading(true)
-                  }}
-                >
-                  <Option value='likes_count'>
-                    <Icon type='like' theme='twoTone' />
+                    </Select>
+                    <Divider />
+                    <Input size='large' placeholder='Channel name' onPressEnter={(event) => {
+                      setChannelName(event.target.value)
+                    }} />
+                    <Divider />
+                  </div>
+                )}
+                {category === 'hashtag' && (
+                  <div>
+                    <Title level={4}>Sort by </Title>
+                    <Select
+                      defaultValue='likes_count'
+                      style={{ width: '100%' }}
+                      onChange={value => {
+                        setSort(value)
+                        setLoading(true)
+                      }}
+                    >
+                      <Option value='likes_count'>
+                        <Icon type='like' theme='twoTone' />
                     Likes
                   </Option>
-                  <Option value='views_count'>
-                    <Icon type='thunderbolt' theme='twoTone' />
+                      <Option value='views_count'>
+                        <Icon type='thunderbolt' theme='twoTone' />
                     Views
                   </Option>
-                  <Option value='newest_popular'>
-                    <Icon type='clock-circle' theme='twoTone' />
+                      <Option value='newest_popular'>
+                        <Icon type='clock-circle' theme='twoTone' />
                     Newest popular
                   </Option>
-                  <Option value='oldest'>
-                    <Icon type='clock-circle' theme='twoTone' />
+                      <Option value='oldest'>
+                        <Icon type='clock-circle' theme='twoTone' />
                     Oldest
                   </Option>
-                </Select>
-                <Divider />
-                <Input size='large' placeholder='# ' onPressEnter={(event) => {
-                  setHashtag(event.target.value)
-                }} />
-                <Divider />
-              </div>
-            )} </div> )}
+                    </Select>
+                    <Divider />
+                    <Input size='large' placeholder='# ' onPressEnter={(event) => {
+                      setHashtag(event.target.value)
+                    }} />
+                    <Divider />
+                  </div>
+                )} </div>)}
 
             <Title level={4}>Settings</Title>
             {
@@ -456,15 +479,18 @@ function App () {
         </Col>
         <Col md={{ span: 12 }}>
           {loading && (<div><h1>Loading</h1></div>)}
-            { platform === 'coub' && (
+          {platform === 'coub' && (
             <Coub setLoading={setLoadingProp} socket={socket} />
-            )}
-            { platform === 'tiktok' && (
+          )}
+          {platform === 'tiktok' && (
             <Tiktok setLoading={setLoadingProp} socket={socket} />
-            )}
+          )}
+          {platform === 'video' && (
+            <Video username={username} setLoading={setLoadingProp} socket={socket} />
+          )}
         </Col>
         <Col md={{ span: 8 }}>
-            <Chat socket={socket} username={username} debug={debug} history={showHistory} users={users} setOwner={setOwnerProp} />
+          <Chat socket={socket} username={username} debug={debug} history={showHistory} users={users} setOwner={setOwnerProp} />
         </Col>
       </Row>
     </div>
