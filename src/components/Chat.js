@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react'
+import React, { useState,useMemo, useEffect, useContext, useRef } from 'react'
 import { Input, Avatar, Divider, Button, Row, Col, Badge, Typography, Mentions } from 'antd'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { animateScroll } from 'react-scroll'
@@ -14,6 +14,10 @@ function isEmpty (str) {
 }
 
 function Chat (props) {
+
+console.log('rerender');
+
+
   const [messages, setMessages] = useState([])
   const [inputText, setInputText] = useState('')
 
@@ -27,7 +31,7 @@ function Chat (props) {
     socket.on(
       'gotMessage',
       (message) => {
-        setMessages(messages => messages.concat(message)) //  /facebook/react/issues/15041
+        setMessages(messages => [...messages, message]) //  /facebook/react/issues/15041
       }
     )
   }, [socket])
@@ -84,69 +88,84 @@ function Chat (props) {
             style={{ height: '45vh', overflowY: 'scroll' }}
           >
             {
-              messages.map((message, index, array) => {
-                let showSender = true
-                if (
-                  array.length > 1 &&
-                    array[index - 1]
-                ) {
-                  if (array[index].from === array[index - 1].from) {
-                    showSender = false
+              useMemo(() => {
+                return messages.map((message, index, array) => {
+                  let showSender = true
+                  if (
+                    array.length > 1 &&
+                      array[index - 1]
+                  ) {
+                    if (array[index].from === array[index - 1].from) {
+                      showSender = false
+                    }
+                    if (!props.history && array[index - 1].from === 'Coub') {
+                      showSender = false
+                    }
                   }
-                  if (!props.history && array[index - 1].from === 'Coub') {
-                    showSender = false
-                  }
-                }
-                if (message.userId === socket.id) {
-                  return (
-                    <Message
-                      key={index}
-                      showUser={showSender}
-                      user={message.from}
-                      userId={message.userId}
-                      time={message.time}
-                      message={message.message}
-                    />
-                  )
-                } else if (message.userId === 'System' && message.from === 'System') {
-                  return (
-                    <Message
-                      key={index}
-                      showUser={showSender}
-                      color='white'
-                      background='radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%)'
-                      user={message.from}
-                      userId={message.userId}
-                      time={message.time}
-                      message={message.message}
-                    />
-                  )
-                } else if (message.userId === 'System' && message.from === 'Debug') {
-                  if (props.debug) {
+                  if (message.userId === socket.id) {
                     return (
                       <Message
                         key={index}
                         showUser={showSender}
-                        color='black'
                         user={message.from}
                         userId={message.userId}
                         time={message.time}
-                        message={`${message.message} \n UserId ${message.userId} \n User ${message.username}`}
+                        message={message.message}
                       />
                     )
-                  }
-                } else if (message.userId === 'System' && message.from === 'Coub') {
-                  // ios_mosaic
-                  const thumbnailLink = message.thumbnail.replace('%{version}', 'tiny')
-                  if (props.history) {
+                  } else if (message.userId === 'System' && message.from === 'System') {
                     return (
                       <Message
                         key={index}
-                        thumbnail={thumbnailLink}
-                        link={message.link}
                         showUser={showSender}
                         color='white'
-                        background='linear-gradient(to top, #141e30, #243b55)'
+                        background='radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%)'
+                        user={message.from}
+                        userId={message.userId}
+                        time={message.time}
+                        message={message.message}
+                      />
+                    )
+                  } else if (message.userId === 'System' && message.from === 'Debug') {
+                    if (props.debug) {
+                      return (
+                        <Message
+                          key={index}
+                          showUser={showSender}
+                          color='black'
+                          user={message.from}
+                          userId={message.userId}
+                          time={message.time}
+                          message={`${message.message} \n UserId ${message.userId} \n User ${message.username}`}
+                        />
+                      )
+                    }
+                  } else if (message.userId === 'System' && message.from === 'Coub') {
+                    // ios_mosaic
+                    const thumbnailLink = message.thumbnail.replace('%{version}', 'tiny')
+                    if (props.history) {
+                      return (
+                        <Message
+                          key={index}
+                          thumbnail={thumbnailLink}
+                          link={message.link}
+                          showUser={showSender}
+                          color='white'
+                          background='linear-gradient(to top, #141e30, #243b55)'
+                          user={message.from}
+                          userId={message.userId}
+                          time={message.time}
+                          message={message.message}
+                        />
+                      )
+                    }
+                  } else {
+                    return (
+                      <Message
+                        key={index}
+                        showUser={showSender}
+                        color='white'
+                        background='linear-gradient(to bottom, #396afc, #2948ff)'
                         user={message.from}
                         userId={message.userId}
                         time={message.time}
@@ -154,23 +173,10 @@ function Chat (props) {
                       />
                     )
                   }
-                } else {
-                  return (
-                    <Message
-                      key={index}
-                      showUser={showSender}
-                      color='white'
-                      background='linear-gradient(to bottom, #396afc, #2948ff)'
-                      user={message.from}
-                      userId={message.userId}
-                      time={message.time}
-                      message={message.message}
-                    />
-                  )
+                  return true
                 }
-                return true
-              }
-              )
+                )
+              }, [messages])
             }
           </div>
         </div>
@@ -215,6 +221,11 @@ function Chat (props) {
               <Option value=':help:'>pls</Option>
               <Option value=':pingu:'>DA WA J</Option>
               <Option value=':aaa:'>AAA</Option>
+              <Option value=':niee:'>niee</Option>
+              <Option value=':maros:'>Maroš</Option>
+              <Option value=':co:'>CO</Option>
+              <Option value=':rebel:'>Rebel</Option>
+
 
             </Mentions>
 

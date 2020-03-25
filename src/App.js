@@ -12,8 +12,11 @@ import {
   Modal,
   Tooltip,
   Input,
-  Alert
+  Alert,
+  List
 } from 'antd'
+
+
 import Noty from 'noty'
 import Coub from './components/Coub'
 import Tiktok from './components/Tiktok'
@@ -34,6 +37,9 @@ const room = 'abc123'
 
 const { Title } = Typography
 const { Option } = Select
+const { Text } = Typography;
+
+const changelog = [<Text>Welcome modal <Text mark>changed</Text></Text>, <Text>Chat should no longer causes <Text mark>memory leaks</Text> ... <Text type="danger">idk 😢😢</Text></Text>, <Text>Messages now use <Text mark>memoization</Text></Text>,  <Text>Emotes audio in each message <Text mark>should not</Text> stack</Text>,<Text>New <Text mark>emotes</Text></Text>]
 
 socket.on('notification', function (object) {
   // Connected, let's sign-up for to receive messages for this room
@@ -130,7 +136,7 @@ function App() {
     <div className='App'>
       <Modal
         visible={showModal}
-        title='Username'
+        title='Welcome'
         footer={[
           <Button
             key='submit'
@@ -151,7 +157,7 @@ function App() {
           </Button>
         ]}
       >
-        <Title level={3}>
+        <Title level={4}>
           Set your username
           <span role='img' aria-label='Glasses'>👓</span>
         </Title>
@@ -167,11 +173,21 @@ function App() {
             </Tooltip>
           }
         />
+
         {usernameError && (
           <div>
             <Alert message='Empty username!' type='error' showIcon />
           </div>
         )}
+        <Divider>
+          Changelog
+          </Divider>
+        <List
+          size="default"
+          bordered
+          dataSource={changelog}
+          renderItem={item => <List.Item>{item}</List.Item>}
+        />
       </Modal>
 
       <Title level={1}>

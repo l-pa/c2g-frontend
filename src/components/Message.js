@@ -21,7 +21,7 @@ function Message (props) {
         )
       }} />))
     } else {
-      setGif(gif => gif.concat(<img src={url} width={'100%'} height={'100%'} style={{ borderRadius: 5 }} alt='gif...' onLoad={() => {
+      setGif(gif => gif.concat(<img src={url} width={'200vw'} height={'100%'} style={{ borderRadius: 5 }} alt='gif...' onLoad={() => {
         animateScroll.scrollToBottom(
           {
             containerId: 'messagesChat',
@@ -38,22 +38,20 @@ function Message (props) {
     if (props.userId !== 'System' && props.message.match(re)) {
       setMatched(true)
       const a = props.message.match(re)
-
+        console.log(a);
+        
       for (let i = 0; i < a.length; i++) {
         const element = a[i]
         switch (element) {
           case ':medic:':
-            new Audio('https://wiki.teamfortress.com/w/images/8/8d/Demoman_medic03.wav').play()
             setGifUrl('https://media.giphy.com/media/WseBPTW8tmlr2/giphy.gif')
             break
 
           case ':gachi:':
-            new Audio('https://www.myinstants.com/media/sounds/rip-ears.mp3').play()
             setGifUrl('https://cdn.betterttv.net/emote/59143b496996b360ff9b807c/3x', true)
             break
 
           case ':clap:':
-            new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
             setGifUrl('https://cdn.betterttv.net/emote/55b6f480e66682f576dd94f5/3x', true)
             break
           case ':bass:':
@@ -90,15 +88,91 @@ function Message (props) {
             setGifUrl('https://discordemoji.com/assets/emoji/1102_belledell1.gif', true)
             break
           case ':aaa:':
-            new Audio('https://www.myinstants.com/media/sounds/five-nights-at-freddys-full-scream-sound_1.mp3').play()
             setGifUrl('https://media.giphy.com/media/IaWnztH7MR0jGZUVXx/giphy.gif')
             break
+          case ':niee:':
+            setGifUrl('https://media.giphy.com/media/dvILshvavCEaM2tIWa/200w_d.gif')
+            break
 
+            case ':maros:':
+              setGifUrl('https://media.giphy.com/media/WrBSHRLE9gEgM/giphy.gif')
+              break
+
+              case ':co:':
+                setGifUrl('https://media.giphy.com/media/9ohlKnRDAmotG/giphy-downsized.gif')
+                break
+
+                case ':rebel:':
+                  setGifUrl('https://thumbs.gfycat.com/ImmaterialThreadbareAdouri-size_restricted.gif')
+                  break
+          default:
+            setGif(gif => gif.concat(<div style={{ borderRadius: 5 }} >{element}</div>))
+            break
+        }
+      }
+      const uniqueEmotes = [...new Set(a)]      
+      console.log(uniqueEmotes);
+      
+      for (let i = 0; i < uniqueEmotes.length; i++) {
+        const element = uniqueEmotes[i]
+        switch (element) {
+          case ':medic:':
+            new Audio('https://wiki.teamfortress.com/w/images/8/8d/Demoman_medic03.wav').play()
+            break
+
+          case ':gachi:':
+            new Audio('https://www.myinstants.com/media/sounds/rip-ears.mp3').play()
+            break
+
+          case ':clap:':
+            new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            break
+          case ':bass:':
+            //   new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            break
+          case ':ja:':
+            //   new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            break
+          case ':xd:':
+            //   new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            break
+          case ':help:':
+            //   new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            break
+
+          case ':smart:':
+            //   new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            break
+          case ':pingu:':
+            //   new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            break
+          case ':pear:':
+            //   new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            break
+          case ':mm:':
+            //   new Audio('https://www.myinstants.com/media/sounds/clap-clap-clap.mp3').play()
+            break
+
+          case ':niee:':
+           new Audio('https://www.myinstants.com/media/sounds/woah_Wlc9EIM.mp3').play()
+            break
+          case ':aaa:':
+            new Audio('https://www.myinstants.com/media/sounds/five-nights-at-freddys-full-scream-sound_1.mp3').play()
+            break
+
+            case ':maros:':
+              new Audio('https://www.myinstants.com/media/sounds/orgasm-6_vHxaAU9.mp3').play()
+              break
+          case ':co:':
+            new Audio('https://www.myinstants.com/media/sounds/kurwa-czujesz-to-czujesz-to.mp3').play()
+            break
+            case ':rebel:':
+              new Audio('https://www.myinstants.com/media/sounds/je-to-rebel.mp3').play()
+              break
           default:
             var audio = new Audio('https://www.myinstants.com/media/sounds/spongebob-fail.mp3')
             audio.volume = 0.3
             audio.play()
-            setGif(gif => gif.concat(<div style={{ borderRadius: 5 }} >{element}</div>))
             break
         }
       }
