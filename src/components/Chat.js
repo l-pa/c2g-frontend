@@ -1,4 +1,4 @@
-import React, { useState,useMemo, useEffect, useContext, useRef } from 'react'
+import React, { useState, useMemo, useEffect, useContext, useRef } from 'react'
 import { Input, Avatar, Divider, Button, Row, Col, Badge, Typography, Mentions } from 'antd'
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { animateScroll } from 'react-scroll'
@@ -9,13 +9,13 @@ const { Option } = Mentions
 
 const dataSource = [':gachi:', ':medic:']
 
-function isEmpty (str) {
+function isEmpty(str) {
   return str.replace(/^\s+|\s+$/gm, '').length === 0
 }
 
-function Chat (props) {
+function Chat(props) {
 
-console.log('rerender');
+  console.log('rerender');
 
 
   const [messages, setMessages] = useState([])
@@ -93,7 +93,7 @@ console.log('rerender');
                   let showSender = true
                   if (
                     array.length > 1 &&
-                      array[index - 1]
+                    array[index - 1]
                   ) {
                     if (array[index].from === array[index - 1].from) {
                       showSender = false
@@ -189,7 +189,7 @@ console.log('rerender');
               prefix={':'}
               value={inputText}
               onSelect={(selected) => {
-                setInputText(text => selected.value)                
+                setInputText(text => selected.value)
               }}
               placeholder={'Message ...'}
               onChange={(value) => setInputText(value)
@@ -226,6 +226,19 @@ console.log('rerender');
               <Option value=':co:'>CO</Option>
               <Option value=':rebel:'>Rebel</Option>
 
+              <Option value=':tonko:'>Tonko</Option>
+              <Option value=':nonono:'>Oh nononon</Option>
+              <Option value=':vysoko:'>Vysoko miris</Option>
+              <Option value=':vecer:'>Dobry vecer</Option>
+              <Option value=':sul:'>Hod tam tu sul</Option>
+              <Option value=':maserka:'>Maserka</Option>
+              <Option value=':mapa:'>Nemate mapu</Option>
+              <Option value=':zkusas:'>Jak zkusas</Option>
+              <Option value=':hnupe:'>HNUPE</Option>
+              <Option value=':rozhanis:'>✋✋✋</Option>
+              <Option value=':hotovo:'>ho to vo</Option>
+
+
 
             </Mentions>
 
@@ -255,7 +268,7 @@ console.log('rerender');
   )
 }
 
-function scrollToBottom () {
+function scrollToBottom() {
   animateScroll.scrollToBottom({
     containerId: 'messagesChat',
     delay: 0,

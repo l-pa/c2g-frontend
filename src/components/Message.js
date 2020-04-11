@@ -4,7 +4,7 @@ import { animateScroll } from 'react-scroll'
 
 const re = /:([\w]+):/g
 
-function Message (props) {
+function Message(props) {
   const [matched, setMatched] = useState(false)
   const [gif, setGif] = useState([])
 
@@ -38,8 +38,8 @@ function Message (props) {
     if (props.userId !== 'System' && props.message.match(re)) {
       setMatched(true)
       const a = props.message.match(re)
-        console.log(a);
-        
+      console.log(a);
+
       for (let i = 0; i < a.length; i++) {
         const element = a[i]
         switch (element) {
@@ -94,25 +94,71 @@ function Message (props) {
             setGifUrl('https://media.giphy.com/media/dvILshvavCEaM2tIWa/200w_d.gif')
             break
 
-            case ':maros:':
-              setGifUrl('https://media.giphy.com/media/WrBSHRLE9gEgM/giphy.gif')
-              break
+          case ':maros:':
+            setGifUrl('https://media.giphy.com/media/WrBSHRLE9gEgM/giphy.gif')
+            break
 
-              case ':co:':
-                setGifUrl('https://media.giphy.com/media/9ohlKnRDAmotG/giphy-downsized.gif')
-                break
+          case ':co:':
+            setGifUrl('https://media.giphy.com/media/9ohlKnRDAmotG/giphy-downsized.gif')
+            break
 
-                case ':rebel:':
-                  setGifUrl('https://thumbs.gfycat.com/ImmaterialThreadbareAdouri-size_restricted.gif')
-                  break
+          case ':rebel:':
+            setGifUrl('https://thumbs.gfycat.com/ImmaterialThreadbareAdouri-size_restricted.gif')
+            break
+
+          case ':tonko:':
+            setGifUrl('https://media.giphy.com/media/yWgPv6KoCY6c0/giphy.gif')
+            break
+          case ':nonono:':
+            setGifUrl('https://media.giphy.com/media/u0LxmF9QVeDoQ/giphy.gif')
+            break
+
+
+          case ':vysoko:':
+            setGifUrl('https://media1.tenor.com/images/5a943ddfef747845bcea8021bf39513b/tenor.gif')
+            break
+
+
+          case ':vecer:':
+            setGifUrl('https://media.giphy.com/media/ASd0Ukj0y3qMM/giphy.gif')
+            break
+
+          case ':sul:':
+            setGifUrl('https://media.giphy.com/media/QOgvV9rV4hHpgNRBfQ/giphy.gif')
+            break
+
+          case ':maserka:':
+            setGifUrl('https://media.giphy.com/media/l0MYRzcWP7cjfNQ2I/giphy.gif')
+            break
+
+          case ':mapa:':
+            setGifUrl('https://media.giphy.com/media/zNyBPu5hEFpu/giphy.gif')
+            break
+
+          case ':zkusas:':
+            setGifUrl('https://thumbs.gfycat.com/UniformDizzyAmericankestrel-size_restricted.gif')
+            break
+          case ':hnupe:':
+            setGifUrl('https://i.makeagif.com/media/4-12-2018/b5p8GJ.gif')
+            break
+          case ':rozhanis:':
+            setGifUrl('https://i.makeagif.com/media/8-21-2015/Z47mdU.gif')
+            break
+
+
+          case ':hotovo:':
+            setGifUrl('https://media.giphy.com/media/26uf9FlttgyOa2zrq/200w_d.gif')
+            break
+
+
           default:
             setGif(gif => gif.concat(<div style={{ borderRadius: 5 }} >{element}</div>))
             break
         }
       }
-      const uniqueEmotes = [...new Set(a)]      
+      const uniqueEmotes = [...new Set(a)]
       console.log(uniqueEmotes);
-      
+
       for (let i = 0; i < uniqueEmotes.length; i++) {
         const element = uniqueEmotes[i]
         switch (element) {
@@ -154,21 +200,67 @@ function Message (props) {
             break
 
           case ':niee:':
-           new Audio('https://www.myinstants.com/media/sounds/woah_Wlc9EIM.mp3').play()
+            new Audio('https://www.myinstants.com/media/sounds/woah_Wlc9EIM.mp3').play()
             break
           case ':aaa:':
             new Audio('https://www.myinstants.com/media/sounds/five-nights-at-freddys-full-scream-sound_1.mp3').play()
             break
 
-            case ':maros:':
-              new Audio('https://www.myinstants.com/media/sounds/orgasm-6_vHxaAU9.mp3').play()
-              break
+          case ':maros:':
+            new Audio('https://www.myinstants.com/media/sounds/orgasm-6_vHxaAU9.mp3').play()
+            break
           case ':co:':
             new Audio('https://www.myinstants.com/media/sounds/kurwa-czujesz-to-czujesz-to.mp3').play()
             break
-            case ':rebel:':
-              new Audio('https://www.myinstants.com/media/sounds/je-to-rebel.mp3').play()
-              break
+
+          case ':tonko:':
+            new Audio('https://www.myinstants.com/media/sounds/dungeon-master_lH2ReGX.mp3').play()
+            break
+
+          case ':nonono:':
+            new Audio('https://www.myinstants.com/media/sounds/oh-no-no-no-no-laugh.mp3').play()
+            break
+
+
+          case ':vysoko:':
+            new Audio('https://www.myinstants.com/media/sounds/hodne-vysoko-miris.mp3').play()
+            break
+
+
+          case ':vecer:':
+            new Audio('http://vyhlasto.cz/audio/3b/3b15-dobry-vecer.mp3').play()
+            break
+
+          case ':sul:':
+            new Audio('http://vyhlasto.cz/audio/3b/3b22-jaj-boze-muj-hod-tam-tu-sul-na-nekoho-tam-z-okna.mp3').play()
+            break
+
+          case ':maserka:':
+            new Audio('http://vyhlasto.cz/audio/1e/1e41-prej-maserka-kurva-je-to.mp3').play()
+            break
+
+          case ':mapa:':
+            new Audio('http://vyhlasto.cz/audio/1e/1e37-neznate-mapu.mp3').play()
+            break
+
+          case ':zkusas:':
+            new Audio('http://vyhlasto.cz/audio/1e/1e19-jak-zkusas.mp3').play()
+            break
+          case ':hnupe:':
+            new Audio('http://vyhlasto.cz/audio/1e/1e8-bez-do-riti-ty-hnupe.mp3').play()
+            break
+          case ':rozhanis:':
+            new Audio('http://vyhlasto.cz/audio/1g/1g7-co-se-tady-rozhanis.mp3').play()
+            break
+
+
+          case ':hotovo:':
+            new Audio('http://vyhlasto.cz/audio/1j/1j6-hotovo-natocte-to.mp3').play()
+            break
+
+          case ':rebel:':
+            new Audio('https://www.myinstants.com/media/sounds/je-to-rebel.mp3').play()
+            break
           default:
             var audio = new Audio('https://www.myinstants.com/media/sounds/spongebob-fail.mp3')
             audio.volume = 0.3
