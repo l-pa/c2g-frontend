@@ -30,8 +30,8 @@ import SocketContext from './SocketContext'
 import '../node_modules/noty/lib/noty.css'
 import '../node_modules/noty/lib/themes/metroui.css'
 
-// const socket = require('socket.io-client')('https://c2gbb.herokuapp.com/')
-const socket = require('socket.io-client')('http://localhost:8080')
+const socket = require('socket.io-client')('https://c2gbb.herokuapp.com/')
+//const socket = require('socket.io-client')('http://localhost:8080')
 
 const room = 'abc'
 
@@ -39,7 +39,7 @@ const { Title } = Typography
 const { Option } = Select
 const { Text } = Typography;
 
-const changelog = [<Text>Welcome modal <Text mark>changed</Text></Text>, <Text>Chat should no longer causes <Text mark>memory leaks</Text> ... <Text type="danger">idk 😢😢</Text></Text>, <Text>Messages now use <Text mark>memoization</Text></Text>,  <Text>Emotes audio in each message <Text mark>should not</Text> stack</Text>,<Text>New <Text mark>emotes</Text></Text>]
+const changelog = [<Text>Welcome modal <Text mark>changed</Text></Text>, <Text>Chat should no longer causes <Text mark>memory leaks</Text> ... <Text type="danger">idk 😢😢</Text></Text>, <Text>Messages now use <Text mark>memoization</Text></Text>, <Text>Emotes audio in each message <Text mark>should not</Text> stack</Text>, <Text>New <Text mark>emotes</Text></Text>]
 
 socket.on('notification', function (object) {
   // Connected, let's sign-up for to receive messages for this room
