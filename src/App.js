@@ -30,7 +30,7 @@ import SocketContext from './SocketContext'
 import '../node_modules/noty/lib/noty.css'
 import '../node_modules/noty/lib/themes/metroui.css'
 
-const socket = require('socket.io-client')('https://c2gbb.herokuapp.com/')
+const socket = require('socket.io-client')('https://c2g-server.herokuapp.com/')
 //const socket = require('socket.io-client')('http://localhost:8080')
 
 const room = 'abc'
