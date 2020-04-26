@@ -3,6 +3,7 @@ import { Input, Avatar, Divider, Button, Row, Col, Badge, Typography, Mentions }
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import { animateScroll } from 'react-scroll'
 import Message from './Message.js'
+import { emotes } from '../emotes'
 
 const { Text } = Typography
 const { Option } = Mentions
@@ -209,7 +210,10 @@ function Chat(props) {
                 }
               }}
             >
-              <Option value=':medic:'>MEDIC</Option>
+              {emotes.map(v => {
+                return <Option value={':' + v.code + ':'}>{v.code}</Option>
+              })}
+              {/* <Option value=':medic:'>MEDIC</Option>
               <Option value=':xd:'>XD</Option>
               <Option value=':pear:'>🍐</Option>
               <Option value=':mm:'>mmm</Option>
@@ -236,9 +240,7 @@ function Chat(props) {
               <Option value=':zkusas:'>Jak zkusas</Option>
               <Option value=':hnupe:'>HNUPE</Option>
               <Option value=':rozhanis:'>✋✋✋</Option>
-              <Option value=':hotovo:'>ho to vo</Option>
-
-
+              <Option value=':hotovo:'>ho to vo</Option> */}
 
             </Mentions>
 
